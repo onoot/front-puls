@@ -17,6 +17,10 @@ class CompanyHttp extends HttpClient {
   async saveStatistics(items: Statistic[]) {
     return this.post<void>('/statistics/save', { items });
   }
+
+  async sendFeedback(data: { name: string; phone: string; email: string; subject: string; message: string }) {
+    return this.post<void>('/feedback/send', data);
+  }
 }
 
 export const companyHttp = new CompanyHttp();

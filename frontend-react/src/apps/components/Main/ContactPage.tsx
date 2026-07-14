@@ -21,16 +21,10 @@ export function ContactPage() {
     e.preventDefault();
     setSending(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/feedback/send`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      if (res.ok) {
-        setSent(true);
-        setForm({ name: '', phone: '', email: '', subject: '', message: '' });
-        setTimeout(() => setSent(false), 5000);
-      }
+      await companyHttp.sendFeedback(form);
+      setSent(true);
+      setForm({ name: '', phone: '', email: '', subject: '', message: '' });
+      setTimeout(() => setSent(false), 5000);
     } catch {
       alert('Ошибка отправки');
     } finally {

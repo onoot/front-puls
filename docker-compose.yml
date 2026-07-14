@@ -3,12 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
     restart: unless-stopped
     environment:
       - BACKEND_URL=${BACKEND_URL:-http://localhost:3000}
-      - API_BASE=${BACKEND_URL:-http://localhost:3000}
       - PORT=4000
     ports:
       - "${CLIENT_PORT:-80}:80"

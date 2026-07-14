@@ -29,11 +29,8 @@ export function PageContentPage({ page }: Props) {
       setContent(res.data);
     } catch {}
     try {
-      const res = await fetch('/api/page-names');
-      if (res.ok) {
-        const json = await res.json();
-        setPageNames(json.data || {});
-      }
+      const res = await pagesHttp.getPageNames();
+      setPageNames(res.data || {});
     } catch {}
     setLoading(false);
   };
@@ -43,13 +40,8 @@ export function PageContentPage({ page }: Props) {
 
   const handleSave = async () => {
     await pagesHttp.savePage(page, content);
-    const token = localStorage.getItem('accessToken');
     if (pageNames[page]) {
-      await fetch('/api/page-names/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ [page]: pageNames[page] }),
-      });
+      await pagesHttp.savePageNames({ [page]: pageNames[page] });
     }
     alert('Сохранено');
   };

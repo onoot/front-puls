@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { pagesHttp } from '../../http/pages';
 import { Preloader } from '../Common/Preloader';
 
 const DEFAULT_PAGES = [
@@ -19,11 +20,8 @@ export function PageNamesPage() {
 
   const load = async () => {
     try {
-      const res = await fetch('/api/page-names');
-      if (res.ok) {
-        const json = await res.json();
-        setNames(json.data || {});
-      }
+      const res = await pagesHttp.getPageNames();
+      setNames(res.data || {});
     } catch {}
     setLoading(false);
   };
@@ -31,12 +29,7 @@ export function PageNamesPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const token = localStorage.getItem('accessToken');
-      await fetch('/api/page-names/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify(names),
-      });
+      await pagesHttp.savePageNames(names);
       alert('Сохранено');
     } catch {}
     setSaving(false);

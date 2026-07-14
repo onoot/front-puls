@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { companyHttp } from '../../http/company';
+import { catalogHttp } from '../../http/catalog';
 
 interface CategoryNode {
   id: number;
@@ -21,9 +22,8 @@ export function Header() {
 
   useEffect(() => {
     companyHttp.getInfo().then(r => setCompany(r.data)).catch(() => {});
-    fetch('/api/catalog/category-tree')
-      .then(r => r.ok && r.json())
-      .then(j => { if (j?.data) setCategories(j.data); })
+    catalogHttp.getCategoryTree()
+      .then(r => { if (r.data) setCategories(r.data); })
       .catch(() => {});
   }, []);
 

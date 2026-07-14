@@ -9,6 +9,14 @@ class PagesHttp extends HttpClient {
   async savePage(page: string, data: Record<string, string>) {
     return this.post<void>('/page/save', { page, data });
   }
+
+  async getPageNames() {
+    return this.get<Record<string, string>>('/page-names');
+  }
+
+  async savePageNames(names: Record<string, string>) {
+    return this.post<void>('/page-names/save', names);
+  }
 }
 
 export const pagesHttp = new PagesHttp();
