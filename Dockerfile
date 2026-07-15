@@ -13,7 +13,7 @@ COPY ssr-express/ .
 RUN npm run build
 
 FROM nginx:alpine
-RUN apk add --no-cache nodejs npm supervisor gettext
+RUN apk add --no-cache nodejs npm supervisor gettext && mkdir -p /var/cache/nginx/uploads
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY entrypoint.sh /entrypoint.sh
