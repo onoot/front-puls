@@ -68,20 +68,20 @@ server {
         try_files \$uri \$uri/ /index.html;
     }
 
-    location /render/ {
+    location ^~ /render/ {
         proxy_pass http://127.0.0.1:4000;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
     }
 
-    location /api/ {
+    location ^~ /api/ {
         proxy_pass http://${BACKEND_IP}:${BACKEND_PORT};
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_read_timeout 60s;
     }
 
-    location /uploads/ {
+    location ^~ /uploads/ {
         rewrite ^/uploads/(.*)\$ /${MINIO_BUCKET}/\$1 break;
         proxy_pass http://${MINIO_IP}:${MINIO_PORT};
         proxy_set_header Host \$host;
