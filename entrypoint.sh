@@ -1,54 +1,17 @@
 #!/bin/sh
 
-resolve() {
-    local name="$1"
-    local result=""
-    result=$(getent hosts "$name" 2>/dev/null | awk '{print $1}')
-    if [ -n "$result" ]; then
-        echo "$result"
-        return
-    fi
-    result=$(nslookup "$name" 127.0.0.11 2>/dev/null | grep "Address:" | tail -1 | awk '{print $2}')
-    if [ -n "$result" ] && [ "$result" != "127.0.0.11" ]; then
-        echo "$result"
-        return
-    fi
-    echo ""
-}
-
 BACKEND_HOST="${BACKEND_HOST:-puls-backend}"
 BACKEND_PORT="${BACKEND_PORT:-3000}"
 MINIO_HOST="${MINIO_HOST:-minio}"
 MINIO_PORT="${MINIO_PORT:-9000}"
 MINIO_BUCKET="${MINIO_BUCKET:-pulsar-uploads}"
 
-BACKEND_IP=""
-for name in "$BACKEND_HOST" "puls-backend" "puls-backend-al51zr"; do
-    BACKEND_IP=$(resolve "$name")
-    if [ -n "$BACKEND_IP" ]; then
-        echo "Backend resolved: $name -> $BACKEND_IP"
-        break
-    fi
-done
-if [ -z "$BACKEND_IP" ]; then
-    BACKEND_IP="127.0.0.1"
-    echo "WARNING: Could not resolve backend, using $BACKEND_IP"
-fi
-
-MINIO_IP=""
-for name in "$MINIO_HOST" "minio"; do
-    MINIO_IP=$(resolve "$name")
-    if [ -n "$MINIO_IP" ]; then
-        echo "MinIO resolved: $name -> $MINIO_IP"
-        break
-    fi
-done
-if [ -z "$MINIO_IP" ]; then
-    MINIO_IP="127.0.0.1"
-    echo "WARNING: Could not resolve minio, using $MINIO_IP"
-fi
+echo "Backend service: ${BACKEND_HOST}:${BACKEND_PORT}"
+echo "MinIO service: ${MINIO_HOST}:${MINIO_PORT}"
 
 cat > /etc/nginx/conf.d/default.conf <<NGINX
+resolver 127.0.0.11 valid=10s ipv6=off;
+
 proxy_cache_path /var/cache/nginx/uploads levels=1:2 keys_zone=uploads_cache:10m max_size=1g inactive=30d;
 
 server {
@@ -75,15 +38,16 @@ server {
     }
 
     location ^~ /api/ {
-        proxy_pass http://${BACKEND_IP}:${BACKEND_PORT};
+        set \$backend_upstream http://${BACKEND_HOST}:${BACKEND_PORT};
+        proxy_pass \$backend_upstream;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_read_timeout 60s;
     }
 
     location ^~ /uploads/ {
-        rewrite ^/uploads/(.*)\$ /${MINIO_BUCKET}/\$1 break;
-        proxy_pass http://${MINIO_IP}:${MINIO_PORT};
+        set \$uploads_upstream http://${BACKEND_HOST}:${BACKEND_PORT}/api/uploads/;
+        proxy_pass \$uploads_upstream;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
 
@@ -102,7 +66,7 @@ server {
 NGINX
 
 echo "=== Generated nginx.conf ==="
-grep -E "proxy_pass|rewrite" /etc/nginx/conf.d/default.conf
+grep -E "proxy_pass|rewrite|resolver" /etc/nginx/conf.d/default.conf
 echo "============================"
 
 exec supervisord -c /etc/supervisord.conf
