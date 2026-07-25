@@ -8,7 +8,7 @@ function getToken(): string | null {
 
 function handleUnauthorized() {
   localStorage.removeItem('accessToken');
-  if (window.location.pathname.startsWith('/dashboard')) {
+  if (window.location.pathname.startsWith('/dashboard') && window.location.pathname !== '/dashboard/login') {
     window.location.href = '/dashboard/login';
   }
 }
@@ -41,12 +41,12 @@ export class HttpClient {
       ...options,
     });
 
+    const json: ApiResponse<T> = await res.json();
+
     if (res.status === 401) {
       handleUnauthorized();
-      throw new Error('Необходима авторизация');
+      throw new Error(json.error?.message || 'Необходима авторизация');
     }
-
-    const json: ApiResponse<T> = await res.json();
 
     if (!res.ok || !json.success) {
       throw new Error(json.error?.message || 'Request failed');

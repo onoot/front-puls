@@ -46,8 +46,9 @@ server {
     }
 
     location ^~ /uploads/ {
-        set \$uploads_upstream http://${BACKEND_HOST}:${BACKEND_PORT}/api/uploads/;
-        proxy_pass \$uploads_upstream;
+        rewrite ^/uploads/(.+)$ /api/uploads/$1 break;
+        set \$backend_upstream http://${BACKEND_HOST}:${BACKEND_PORT};
+        proxy_pass \$backend_upstream;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
 
