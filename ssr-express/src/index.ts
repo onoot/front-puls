@@ -1,7 +1,30 @@
 import express, { Request, Response } from 'express';
+import fs from 'fs';
+import path from 'path';
 
 const app = express();
 const API_BASE = process.env.API_BASE || 'http://backend:3000';
+const INDEX_HTML_PATH = process.env.INDEX_HTML_PATH || '/usr/share/nginx/html/index.html';
+
+let cachedIndexHtml: string | null = null;
+
+function getIndexHtml(): string {
+  if (cachedIndexHtml) return cachedIndexHtml;
+  try {
+    cachedIndexHtml = fs.readFileSync(INDEX_HTML_PATH, 'utf-8');
+  } catch {
+    cachedIndexHtml = '<!DOCTYPE html><html><body><div id="root"></div></body></html>';
+  }
+  return cachedIndexHtml;
+}
+
+function injectDataIntoHtml(html: string, data: Record<string, any>): string {
+  const script = `<script>window.__SSR_DATA__=${JSON.stringify(data)}</script>`;
+  if (html.includes('</head>')) {
+    return html.replace('</head>', `${script}\n</head>`);
+  }
+  return script + html;
+}
 
 interface ApiResponse<T> {
   success: boolean;
@@ -82,155 +105,24 @@ app.get('/', async (_req: Request, res: Response) => {
       fetchApi<Record<string, string>>('/api/page/about'),
     ]);
 
-    const slides = (slidesRes?.data as any[]) || [];
-    const stats = (statsRes?.data as any[]) || [];
-    const company = (companyRes?.data as Record<string, string>) || {};
-    const brands = (brandsRes?.data as any[]) || [];
-    const letters = (lettersRes?.data as any[]) || [];
-    const projects: any[] = (projectsRes?.data as any)?.items || [];
-    const about = (aboutRes?.data as Record<string, string>) || {};
+    const data = {
+      slides: (slidesRes?.data as any[]) || [],
+      stats: (statsRes?.data as any[]) || [],
+      company: (companyRes?.data as Record<string, string>) || {},
+      brands: (brandsRes?.data as any[]) || [],
+      letters: (lettersRes?.data as any[]) || [],
+      projects: ((projectsRes?.data as any)?.items) || [],
+      about: (aboutRes?.data as Record<string, string>) || {},
+    };
 
-    const slidesHtml = slides.length > 0 ? `
-      <section class="hero-section">
-        ${slides.map(s => `
-          <div class="hero-slide">
-            ${s.photo ? `<img class="hero-slide-img" src="/uploads/${escapeHtml(s.photo)}" alt="${escapeHtml(s.name || '')}" loading="eager">` : '<div class="hero-slide-img hero-slide-img--fallback"></div>'}
-            <div class="hero-slide-overlay"></div>
-            <div class="hero-slide-content container">
-              ${s.name ? `<h1 class="hero-slide-title">${escapeHtml(s.name)}</h1>` : ''}
-              ${s.description ? `<p class="hero-slide-desc">${escapeHtml(s.description)}</p>` : ''}
-            </div>
-          </div>
-        `).join('')}
-      </section>` : '';
-
-    const statsHtml = stats.length > 0 ? `
-      <section class="space bg-smoke">
-        <div class="container">
-          <div class="row gy-30">
-            ${stats.map(s => `
-              <div class="col-xl-3 col-md-6 text-center">
-                <h3 style="font-size:42px;font-weight:700;color:var(--theme-color)">${escapeHtml(s.value || '')}</h3>
-                <p style="font-size:14px;color:var(--gray-color);margin:0">${escapeHtml(s.label || '')}</p>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>` : '';
-
-    const aboutHtml = `
-      <section class="overflow-hidden space" id="home-about">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-xl-6 mb-40">
-              <div class="img-box2">
-                ${company.logo ? `<div class="img1"><img src="/uploads/${escapeHtml(company.logo)}" alt="О компании" loading="lazy"></div>` : '<div class="block-skeleton" style="width:100%;height:300px"></div>'}
-              </div>
-            </div>
-            <div class="col-xl-6">
-              <div class="about-card">
-                <div class="title-area mb-30">
-                  <span class="sub-title">О компании</span>
-                  <h2 class="sec-title">${escapeHtml(about.companyCaption || 'О компании «Пульсар»')}</h2>
-                </div>
-                <p class="about-card_text">${escapeHtml(about.companyDescription || 'Мы — надёжный поставщик сантехнического оборудования, труб и комплектующих для застройщиков, подрядчиков и оптовых покупателей.')}</p>
-                <a href="/about" class="themeholy-btn" style="margin-top:20px;display:inline-block">Подробнее о компании</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>`;
-
-    const projectsHtml = projects.length > 0 ? `
-      <section class="space bg-smoke" id="home-projects">
-        <div class="container">
-          <div class="title-area text-center">
-            <span class="sub-title">Портфолио</span>
-            <h2 class="sec-title">Наши проекты</h2>
-          </div>
-          <div class="row gy-30">
-            ${projects.slice(0, 8).map(p => `
-              <div class="col-xl-3 col-md-4 col-sm-6">
-                <div class="themeholy-product">
-                  <div class="product-img">
-                    ${p.photo ? `<img src="/uploads/${escapeHtml(p.photo)}" alt="${escapeHtml(p.name || '')}" loading="lazy">` : ''}
-                  </div>
-                  <h3 class="product-title">${escapeHtml(p.name || '')}</h3>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>` : '';
-
-    const brandsHtml = brands.length > 0 ? `
-      <section class="brand-sec1">
-        <div class="container">
-          <div class="title-area text-center">
-            <span class="sub-title">Партнёры</span>
-            <h2 class="sec-title">Наши партнёры</h2>
-          </div>
-          <div class="row gy-30 justify-content-center">
-            ${brands.map(b => `
-              <div class="col-lg-3 col-md-4 col-sm-6 text-center">
-                ${b.photo ? `<img src="/uploads/${escapeHtml(b.photo)}" alt="${escapeHtml(b.name || '')}" style="max-height:80px" loading="lazy">` : ''}
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>` : '';
-
-    const lettersHtml = letters.length > 0 ? `
-      <section class="space bg-smoke">
-        <div class="container">
-          <div class="title-area text-center">
-            <span class="sub-title">Отзывы</span>
-            <h2 class="sec-title">Благодарственные письма</h2>
-          </div>
-          <div class="row gy-30 justify-content-center">
-            ${letters.map(l => `
-              <div class="col-lg-3 col-md-4 col-sm-6 text-center">
-                ${l.photo ? `<img src="/uploads/${escapeHtml(l.photo)}" alt="${escapeHtml(l.name || '')}" class="letters-item" loading="lazy">` : ''}
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>` : '';
-
-    const seo = await fetchApi<SeoData>('/api/seo/home');
-
-    const html = `<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Пульсар — Сантехническое оборудование, трубы, счётчики оптом</title>
-  <meta name="description" content="${escapeHtml(seo?.data?.description || 'Поставщик сантехнического оборудования, труб и счётчиков для застройщиков. Оптовые цены, доставка по всей России.')}">
-  <meta name="keywords" content="${escapeHtml(seo?.data?.keywords || '')}">
-  <meta name="robots" content="index, follow">
-  <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="stylesheet" href="/assets/main.css">
-  <link rel="preload" href="/api/slides" as="fetch" crossorigin>
-  <link rel="preload" href="/api/statistics" as="fetch" crossorigin>
-</head>
-<body>
-  <div class="home-page">
-    ${slidesHtml}
-    ${statsHtml}
-    ${aboutHtml}
-    ${projectsHtml}
-    ${brandsHtml}
-    ${lettersHtml}
-  </div>
-  <script src="/assets/main.js" defer></script>
-</body>
-</html>`;
-
+    const html = getIndexHtml();
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.send(html);
+    res.send(injectDataIntoHtml(html, data));
   } catch (err) {
     console.error('SSR home error:', err);
-    res.status(500).send('Internal Server Error');
+    const html = getIndexHtml();
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html);
   }
 });
 

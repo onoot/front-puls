@@ -13,16 +13,36 @@ import { projectsHttp } from '../../http/projects';
 import { pagesHttp } from '../../http/pages';
 import { Preloader } from '../Common/Preloader';
 
+declare global {
+  interface Window {
+    __SSR_DATA__?: {
+      slides?: Slide[];
+      stats?: Statistic[];
+      company?: Record<string, string>;
+      brands?: Brand[];
+      letters?: Letter[];
+      projects?: Project[];
+      about?: Record<string, string>;
+    };
+  }
+}
+
 export function HomePage() {
-  const [slides, setSlides] = useState<Slide[] | null>(null);
-  const [stats, setStats] = useState<Statistic[] | null>(null);
-  const [brands, setBrands] = useState<Brand[] | null>(null);
-  const [letters, setLetters] = useState<Letter[] | null>(null);
-  const [projects, setProjects] = useState<Project[] | null>(null);
-  const [company, setCompany] = useState<Record<string, string>>({});
-  const [aboutContent, setAboutContent] = useState<Record<string, string>>({});
+  const ssr = typeof window !== 'undefined' ? window.__SSR_DATA__ : undefined;
+
+  const [slides, setSlides] = useState<Slide[] | null>(ssr?.slides ?? null);
+  const [stats, setStats] = useState<Statistic[] | null>(ssr?.stats ?? null);
+  const [brands, setBrands] = useState<Brand[] | null>(ssr?.brands ?? null);
+  const [letters, setLetters] = useState<Letter[] | null>(ssr?.letters ?? null);
+  const [projects, setProjects] = useState<Project[] | null>(ssr?.projects ?? null);
+  const [company, setCompany] = useState<Record<string, string>>(ssr?.company ?? {});
+  const [aboutContent, setAboutContent] = useState<Record<string, string>>(ssr?.about ?? {});
 
   useEffect(() => {
+    if (window.__SSR_DATA__) {
+      delete window.__SSR_DATA__;
+      return;
+    }
     sliderHttp.getPublic().then(r => setSlides(r.data)).catch(() => setSlides([]));
     companyHttp.getStatistics().then(r => setStats(r.data)).catch(() => setStats([]));
     companyHttp.getInfo().then(r => setCompany(r.data)).catch(() => {});
