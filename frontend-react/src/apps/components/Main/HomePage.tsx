@@ -141,7 +141,7 @@ export function HomePage() {
                 <SwiperSlide key={project.id}>
                   <div className="themeholy-product">
                     <div className="product-img">
-                      {project.photo && <img src={`/uploads/${project.photo}`} alt={project.name} />}
+                      {project.photo && <img src={`/uploads/${project.photo}`} alt={project.name} loading="lazy" />}
                     </div>
                     <h3 className="product-title">{project.name}</h3>
                   </div>
@@ -163,7 +163,7 @@ export function HomePage() {
             <div className="row gy-30 justify-content-center">
               {brands.map(brand => (
                 <div key={brand.id} className="col-lg-3 col-md-4 col-sm-6 text-center">
-                  {brand.photo && <img src={`/uploads/${brand.photo}`} alt={brand.name} style={{ maxHeight: 80 }} />}
+                  {brand.photo && <img src={`/uploads/${brand.photo}`} alt={brand.name} style={{ maxHeight: 80 }} loading="lazy" />}
                 </div>
               ))}
             </div>
@@ -182,7 +182,7 @@ export function HomePage() {
             <div className="row gy-30 justify-content-center">
               {letters.map(letter => (
                 <div key={letter.id} className="col-lg-3 col-md-4 col-sm-6 text-center">
-                  {letter.photo && <img src={`/uploads/${letter.photo}`} alt={letter.name} className="letters-item" />}
+                  {letter.photo && <img src={`/uploads/${letter.photo}`} alt={letter.name} className="letters-item" loading="lazy" />}
                 </div>
               ))}
             </div>
