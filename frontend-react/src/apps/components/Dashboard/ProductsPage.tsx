@@ -51,8 +51,8 @@ export function ProductsPage() {
               <td>{p.sku}</td>
               <td>
                 {(() => {
-                  const isInherited = !p.photo && p.categoryPhoto;
-                  const src = p.categoryPhoto || p.photo;
+                  const src = p.ownPhoto || p.categoryPhoto || p.photo;
+                  const isInherited = !p.ownPhoto && !p.photo && !!p.categoryPhoto;
                   return src ? (
                     <div className={`photo-cell${isInherited ? ' inherited-photo' : ''}`} title={isInherited ? 'Унаследовано от категории' : ''}>
                       <img src={`/uploads/${src}`} alt="" width="50" height="50" style={{ objectFit: 'cover' }} />
