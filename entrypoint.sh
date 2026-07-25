@@ -39,8 +39,8 @@ server {
     }
 
     location ~* ^/uploads/[\w\\-]+\\.(jpe?g|png|gif|webp|ico|pdf)\$ {
-        rewrite ^/uploads/(.+)\$ /${MINIO_BUCKET}/\$1 break;
-        proxy_pass http://${MINIO_HOST}:${MINIO_PORT};
+        rewrite ^/uploads/(.+)\$ /api/uploads/\$1 break;
+        proxy_pass http://${BACKEND_HOST}:${BACKEND_PORT};
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
 
