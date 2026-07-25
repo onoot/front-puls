@@ -47,9 +47,6 @@ export function ProductPage() {
     ...uniqueProps.map(([k, v]) => ({ label: k, value: v })),
   ];
 
-  const hasDescription = product.description && product.description.trim().length > 0;
-  const hasSpecs = allVisibleProps.length > 0;
-
   return (
     <>
       <Breadcrumb
@@ -98,36 +95,36 @@ export function ProductPage() {
                 <p className="product-card-sku">Артикул: {product.sku}</p>
               </div>
 
-              {(hasDescription || hasSpecs) && (
-                <div className="product-tabs">
-                  <div className="product-tabs-nav">
-                    {hasDescription && (
-                      <button
-                        type="button"
-                        className={`product-tabs-btn${activeTab === 'description' ? ' active' : ''}`}
-                        onClick={() => setActiveTab('description')}
-                      >
-                        <i className="fa-regular fa-align-left" /> Описание
-                      </button>
-                    )}
-                    {hasSpecs && (
-                      <button
-                        type="button"
-                        className={`product-tabs-btn${activeTab === 'specs' ? ' active' : ''}`}
-                        onClick={() => setActiveTab('specs')}
-                      >
-                        <i className="fa-regular fa-list" /> Характеристики
-                      </button>
-                    )}
-                  </div>
-                  <div className="product-tabs-content">
-                    {activeTab === 'description' && hasDescription && (
-                      <div className="product-tab-desc">
+              <div className="product-tabs">
+                <div className="product-tabs-nav">
+                  <button
+                    type="button"
+                    className={`product-tabs-btn${activeTab === 'description' ? ' active' : ''}`}
+                    onClick={() => setActiveTab('description')}
+                  >
+                    <i className="fa-regular fa-align-left" /> Описание
+                  </button>
+                  <button
+                    type="button"
+                    className={`product-tabs-btn${activeTab === 'specs' ? ' active' : ''}`}
+                    onClick={() => setActiveTab('specs')}
+                  >
+                    <i className="fa-regular fa-list" /> Характеристики
+                  </button>
+                </div>
+                <div className="product-tabs-content">
+                  {activeTab === 'description' && (
+                    <div className="product-tab-desc">
+                      {product.description && product.description.trim().length > 0 ? (
                         <p>{product.description}</p>
-                      </div>
-                    )}
-                    {activeTab === 'specs' && hasSpecs && (
-                      <div className="product-tab-specs">
+                      ) : (
+                        <p style={{ color: '#999' }}>Описание не указано</p>
+                      )}
+                    </div>
+                  )}
+                  {activeTab === 'specs' && (
+                    <div className="product-tab-specs">
+                      {allVisibleProps.length > 0 ? (
                         <table className="specs-table-v2">
                           <tbody>
                             {allVisibleProps.map((f, i) => (
@@ -138,17 +135,13 @@ export function ProductPage() {
                             ))}
                           </tbody>
                         </table>
-                      </div>
-                    )}
-                  </div>
+                      ) : (
+                        <p style={{ color: '#999' }}>Характеристики не указаны</p>
+                      )}
+                    </div>
+                  )}
                 </div>
-              )}
-
-              {!hasDescription && !hasSpecs && (
-                <div className="product-card-desc" style={{ color: '#999', fontSize: 14 }}>
-                  Описание и характеристики отсутствуют
-                </div>
-              )}
+              </div>
 
               {product.documents && product.documents.length > 0 && (
                 <div className="product-card-docs">
