@@ -20,12 +20,6 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
-    location = / {
-        proxy_pass http://127.0.0.1:4000;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-    }
-
     location / {
         try_files \$uri \$uri/ /index.html;
     }
