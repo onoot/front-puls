@@ -1805,30 +1805,43 @@
 /* ==================== SPECS TABLE V2 ==================== */
 .specs-table-v2 {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.04);
 }
 
-.specs-table-v2 tr + tr {
-  border-top: 1px solid #f0f0f0;
+.specs-table-v2 tr:nth-child(even) {
+  background: var(--light-gray);
+}
+
+.specs-table-v2 tr:hover {
+  background: rgba(0, 113, 172, 0.03);
 }
 
 .specs-table-v2 td {
   padding: 14px 20px;
   font-size: 14px;
   line-height: 1.5;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
   vertical-align: middle;
+}
+
+.specs-table-v2 tr:last-child td {
+  border-bottom: none;
 }
 
 .specs-table-v2 .specs-label {
   width: 40%;
   font-weight: 600;
-  color: #555;
-  background: #fafbfc;
-  border-right: 1px solid #eee;
+  color: var(--gray-color);
+  background: rgba(0, 113, 172, 0.04);
+  white-space: nowrap;
 }
 
 .specs-table-v2 .specs-value {
-  color: #333;
+  color: var(--black-color);
   font-weight: 500;
   padding-left: 20px;
 }
