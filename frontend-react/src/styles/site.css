@@ -1806,42 +1806,29 @@
 .specs-table-v2 {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid #e9ecef;
 }
 
-.specs-table-v2 tr:nth-child(even) {
-  background: #f8f9fb;
-}
-
-.specs-table-v2 tr:hover {
-  background: rgba(0, 113, 172, 0.04);
+.specs-table-v2 tr + tr {
+  border-top: 1px solid #f0f0f0;
 }
 
 .specs-table-v2 td {
-  padding: 12px 18px;
+  padding: 14px 20px;
   font-size: 14px;
   line-height: 1.5;
-  border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
 }
 
-.specs-table-v2 tr:last-child td {
-  border-bottom: none;
-}
-
 .specs-table-v2 .specs-label {
-  width: 45%;
+  width: 40%;
   font-weight: 600;
   color: #555;
-  background: linear-gradient(135deg, #f8f9fb 0%, #f0f2f5 100%);
-  border-right: 3px solid var(--theme-color);
-  white-space: nowrap;
+  background: #fafbfc;
+  border-right: 1px solid #eee;
 }
 
 .specs-table-v2 .specs-value {
-  color: var(--black-color);
+  color: #333;
   font-weight: 500;
   padding-left: 20px;
 }
