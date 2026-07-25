@@ -38,8 +38,8 @@ server {
         proxy_read_timeout 60s;
     }
 
-    location ^~ /uploads/ {
-        rewrite ^/uploads/(.+)$ /${MINIO_BUCKET}/\$1 break;
+    location ~* ^/uploads/[\w\\-]+\\.(jpe?g|png|gif|webp|ico|pdf)\$ {
+        rewrite ^/uploads/(.+)\$ /${MINIO_BUCKET}/\$1 break;
         proxy_pass http://${MINIO_HOST}:${MINIO_PORT};
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
@@ -49,6 +49,10 @@ server {
         proxy_cache_valid 404 1m;
         proxy_cache_use_stale error timeout updating http_500 http_502 http_503;
         add_header X-Cache-Status \$upstream_cache_status;
+    }
+
+    location ~ ^/uploads/ {
+        return 403;
     }
 
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)\$ {
