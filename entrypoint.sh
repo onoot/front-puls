@@ -38,7 +38,11 @@ server {
         proxy_read_timeout 60s;
     }
 
-    location ~* ^/uploads/[\w\\-]+\\.(jpe?g|png|gif|webp|ico|pdf)\$ {
+    if (\$request_uri ~* "\.\.") {
+        return 403;
+    }
+
+    location ~* ^/uploads/[\w./-]+\\.(jpe?g|png|gif|webp|ico|pdf)\$ {
         rewrite ^/uploads/(.+)\$ /api/uploads/\$1 break;
         proxy_pass http://${BACKEND_HOST}:${BACKEND_PORT};
         proxy_set_header Host \$host;
