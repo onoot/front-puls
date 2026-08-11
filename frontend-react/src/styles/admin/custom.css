@@ -267,6 +267,25 @@
     font-size: 14px;
     margin-bottom: 12px;
     transition: border-color .2s;
+    color: #111827;
+}
+
+.entity-form input::placeholder,
+.entity-form textarea::placeholder {
+    color: #9ca3af;
+}
+
+.entity-form input.inherited-name::placeholder {
+    color: #6b7280;
+    font-style: italic;
+}
+
+.entity-form .inherited-name-hint {
+    display: block;
+    margin: -6px 0 12px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #d97706;
 }
 
 .entity-form input:focus,
