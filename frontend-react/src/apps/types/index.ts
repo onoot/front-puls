@@ -51,6 +51,7 @@ export interface PageContent {
 export interface Product {
   id: number;
   sku: string;
+  name?: string | null;
   description: string | null;
   photo: string | null;
   categoryId: number | null;

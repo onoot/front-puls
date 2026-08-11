@@ -24,7 +24,8 @@ export function CatalogPage() {
 
   const loadProducts = useCallback(() => {
     setLoading(true);
-    catalogHttp.getPublicProducts(categoryId ? Number(categoryId) : undefined, page, search || undefined)
+    const catId = categoryId !== undefined ? Number(categoryId) : undefined;
+    catalogHttp.getPublicProducts(catId, page, search || undefined)
       .then(r => {
         setProducts(r.data.items);
         setTotalPages(r.data.totalPages);
@@ -94,7 +95,7 @@ export function CatalogPage() {
                     <Link to={`/product/${p.id}`} className="dns-card">
                       <div className="dns-card-main">
                         {main ? (
-                          <img src={`/uploads/${main}`} alt={p.categoryName || p.sku} />
+                          <img src={`/uploads/${main}`} alt={p.name || p.sku} />
                         ) : (
                           <div className="dns-card-placeholder"><i className="fa-regular fa-image" /></div>
                         )}
@@ -106,7 +107,7 @@ export function CatalogPage() {
                           ))}
                         </div>
                       )}
-                      <div className="dns-card-title">{p.categoryName || p.sku}</div>
+                      <div className="dns-card-title">{p.name || p.sku}</div>
                     </Link>
                   </div>
                 );

@@ -12,7 +12,7 @@ class CatalogHttp extends HttpClient {
 
   async getPublicProducts(categoryId?: number, page = 1, search?: string) {
     const params = new URLSearchParams();
-    if (categoryId) params.set('categoryId', String(categoryId));
+    if (categoryId !== undefined) params.set('categoryId', String(categoryId));
     params.set('page', String(page));
     if (search) params.set('search', search);
     return this.get<PaginatedResult<Product>>(`/catalog/products?${params}`);

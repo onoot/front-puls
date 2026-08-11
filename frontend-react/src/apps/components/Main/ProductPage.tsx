@@ -31,7 +31,7 @@ export function ProductPage() {
   }, [id]);
 
   useEffect(() => {
-    if (product) document.title = `${product.categoryName || product.sku} | Пульсар`;
+    if (product) document.title = `${product.name || product.sku} | Пульсар`;
   }, [product]);
 
   if (!product) return <div className="space"><div className="container"><div className="section-loading"><Preloader /></div></div></div>;
@@ -50,11 +50,11 @@ export function ProductPage() {
   return (
     <>
       <Breadcrumb
-        title={product.categoryName || product.sku}
+        title={product.name || product.sku}
         items={[
           { label: 'Главная', href: '/' },
           { label: 'Каталог', href: '/catalog' },
-          { label: product.categoryName || product.sku },
+          { label: product.name || product.sku },
         ]}
       />
 
@@ -64,7 +64,7 @@ export function ProductPage() {
             <div className="product-card-gallery">
               <div className="product-card-main-img">
                 {activePhoto ? (
-                  <img src={`/uploads/${activePhoto}`} alt={product.categoryName || product.sku} />
+                  <img src={`/uploads/${activePhoto}`} alt={product.name || product.sku} />
                 ) : (
                   <div className="product-card-no-img">
                     <i className="fa-regular fa-image" />
@@ -90,8 +90,8 @@ export function ProductPage() {
 
             <div className="product-card-info">
               <div className="product-card-header">
-                <span className="product-card-category">{product.categoryName}</span>
-                <h1 className="product-card-title">{product.categoryName || 'Товар'}</h1>
+                <span className="product-card-category">{product.categoryName || 'Прочее'}</span>
+                <h1 className="product-card-title">{product.name || product.sku}</h1>
                 <p className="product-card-sku">Артикул: {product.sku}</p>
               </div>
 

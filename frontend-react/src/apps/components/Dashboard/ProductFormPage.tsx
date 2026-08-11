@@ -8,7 +8,7 @@ export function ProductFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
-  const [form, setForm] = useState({ sku: '', description: '', photo: '', categoryId: '', sort: 0, visible: true });
+  const [form, setForm] = useState({ sku: '', name: '', description: '', photo: '', categoryId: '', sort: 0, visible: true });
   const [categories, setCategories] = useState<any[]>([]);
   const [categoryPropsFields, setCategoryPropsFields] = useState<PropertyField[]>([]);
   const [excludedKeys, setExcludedKeys] = useState<string[]>([]);
@@ -24,7 +24,7 @@ export function ProductFormPage() {
       catalogHttp.getProduct(Number(id)).then(r => {
         const p = r.data;
         setForm({
-          sku: p.sku, description: p.description || '', photo: p.photo || '',
+          sku: p.sku, name: p.name || '', description: p.description || '', photo: p.photo || '',
           categoryId: (p as any).category_id?.toString() || '', sort: p.sort, visible: p.visible,
         });
         const prodProps: Record<string, string> = p.properties || {};
@@ -160,6 +160,7 @@ export function ProductFormPage() {
         <button type="button" className="btn btn-secondary" onClick={() => navigate('/dashboard/products')}>Назад</button>
       </div>
       <form onSubmit={handleSubmit} className="entity-form">
+        <label>Название товара <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="Например: Компрессор ПКС 200" /></label>
         <label>Артикул <input value={form.sku} onChange={e => setForm(p => ({ ...p, sku: e.target.value }))} required /></label>
         <label>Описание <textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} rows={4} /></label>
         <ImagePickerField label="Фото" value={form.photo} onChange={v => setForm(p => ({ ...p, photo: v }))} />

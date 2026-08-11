@@ -41,13 +41,13 @@ export function ProductsPage() {
       {loading && <div className="page-loading"><Preloader /></div>}
       {!loading && <table className="data-table">
         <thead>
-          <tr><th>ID</th><th>Название</th><th>Артикул</th><th>Фото</th><th>ID категории</th><th>Видимость</th><th>Действия</th></tr>
+          <tr><th>ID</th><th>Название</th><th>Артикул</th><th>Фото</th><th>Категория</th><th>Видимость</th><th>Действия</th></tr>
         </thead>
         <tbody>
           {products.map(p => (
             <tr key={p.id}>
               <td>{p.id}</td>
-              <td>{p.categoryName || p.sku}</td>
+              <td>{p.name || p.sku}</td>
               <td>{p.sku}</td>
               <td>
                 {(() => {
@@ -63,7 +63,7 @@ export function ProductsPage() {
                   );
                 })()}
               </td>
-              <td>{p.category_id ?? '-'}</td>
+              <td>{p.categoryName || 'Без категории'}</td>
               <td><input type="checkbox" checked={p.visible} onChange={() => toggleVisible(p.id, p.visible)} /></td>
               <td className="table-action">
                 <Link to={`/dashboard/products/edit/${p.id}`} className="btn btn-sm btn-success">Редактировать</Link>
