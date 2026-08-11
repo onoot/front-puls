@@ -42,7 +42,7 @@ server {
         return 403;
     }
 
-    location ~* ^/uploads/[\w./-]+\\.(jpe?g|png|gif|webp|ico|pdf)\$ {
+    location ~* ^/uploads/[\w./-]+\.(jpe?g|jfif|png|gif|webp|ico|pdf|svg|avif)$ {
         rewrite ^/uploads/(.+)\$ /api/uploads/\$1 break;
         proxy_pass http://${BACKEND_HOST}:${BACKEND_PORT};
         proxy_set_header Host \$host;
