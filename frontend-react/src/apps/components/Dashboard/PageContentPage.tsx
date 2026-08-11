@@ -5,20 +5,66 @@ import { Preloader } from '../Common/Preloader';
 
 interface Props { page: 'about' | 'delivery' }
 
-const PAGE_LABELS: Record<string, string> = { about: 'О компании', delivery: 'Доставка и оплата' };
+const PAGE_META: Record<string, { label: string; subtitle: string; icon: string }> = {
+  about: { label: 'О компании', subtitle: 'Контент страницы «О компании»', icon: 'fa-file-lines' },
+  delivery: { label: 'Доставка и оплата', subtitle: 'Контент страницы «Доставка и оплата»', icon: 'fa-truck' },
+};
 
-const ABOUT_FIELDS = ['companyCaption', 'companyDescription', 'leftBlockCaption', 'leftBlockDescription'];
-const DELIVERY_FIELDS = ['caption', 'deliveryDescription', 'methods', 'methodsCaption', 'leftBlockCaption', 'leftBlockText'];
+const FIELD_LABELS: Record<string, string> = {
+  companyCaption: 'Заголовок',
+  companyDescription: 'Описание',
+  leftBlockCaption: 'Заголовок левого блока',
+  leftBlockDescription: 'Описание левого блока',
+  leftBlockText: 'Текст левого блока',
+  caption: 'Заголовок страницы',
+  deliveryDescription: 'Описание доставки',
+  methods: 'Способы оплаты',
+  methodsCaption: 'Заголовок способов оплаты',
+  photo: 'Фото',
+  leftBlockImage: 'Изображение левого блока',
+};
 
-const IMAGE_FIELDS: Record<string, string[]> = {
-  about: ['photo', 'leftBlockImage'],
-  delivery: ['photo'],
+const FIELD_GROUPS: Record<string, { icon: string; title: string; fields: { key: string; area: 'input' | 'textarea' | 'image' }[] }[]> = {
+  about: [
+    { icon: 'fa-image', title: 'Изображения', fields: [
+      { key: 'photo', area: 'image' },
+      { key: 'leftBlockImage', area: 'image' },
+    ] },
+    { icon: 'fa-file-lines', title: 'Основной блок', fields: [
+      { key: 'companyCaption', area: 'input' },
+      { key: 'companyDescription', area: 'textarea' },
+    ] },
+    { icon: 'fa-columns', title: 'Левый блок', fields: [
+      { key: 'leftBlockCaption', area: 'input' },
+      { key: 'leftBlockDescription', area: 'textarea' },
+    ] },
+  ],
+  delivery: [
+    { icon: 'fa-image', title: 'Изображения', fields: [
+      { key: 'photo', area: 'image' },
+    ] },
+    { icon: 'fa-file-lines', title: 'Основной блок', fields: [
+      { key: 'caption', area: 'input' },
+      { key: 'deliveryDescription', area: 'textarea' },
+    ] },
+    { icon: 'fa-credit-card', title: 'Способы оплаты', fields: [
+      { key: 'methodsCaption', area: 'input' },
+      { key: 'methods', area: 'textarea' },
+    ] },
+    { icon: 'fa-columns', title: 'Левый блок', fields: [
+      { key: 'leftBlockCaption', area: 'input' },
+      { key: 'leftBlockText', area: 'textarea' },
+    ] },
+  ],
 };
 
 export function PageContentPage({ page }: Props) {
   const [content, setContent] = useState<Record<string, string>>({});
   const [pageNames, setPageNames] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => { load(); }, [page]);
 
@@ -35,41 +81,108 @@ export function PageContentPage({ page }: Props) {
     setLoading(false);
   };
 
-  const fields = page === 'about' ? ABOUT_FIELDS : DELIVERY_FIELDS;
-  const imageFields = IMAGE_FIELDS[page] || [];
+  const groups = FIELD_GROUPS[page];
 
   const handleSave = async () => {
-    await pagesHttp.savePage(page, content);
-    if (pageNames[page]) {
-      await pagesHttp.savePageNames({ [page]: pageNames[page] });
+    setSaving(true);
+    setError('');
+    try {
+      await pagesHttp.savePage(page, content);
+      if (pageNames[page]) {
+        await pagesHttp.savePageNames({ [page]: pageNames[page] });
+      }
+      setSaved(true);
+      window.setTimeout(() => setSaved(false), 2500);
+    } catch {
+      setError('Не удалось сохранить. Попробуйте ещё раз.');
     }
-    alert('Сохранено');
+    setSaving(false);
   };
 
   return (
     <div>
-      <h1>{PAGE_LABELS[page]}</h1>
+      <div className="page-header">
+        <div>
+          <h1>{PAGE_META[page].label}</h1>
+          <p className="page-subtitle">{PAGE_META[page].subtitle}</p>
+        </div>
+      </div>
       {loading && <div className="page-loading"><Preloader /></div>}
-      {!loading && <div className="entity-form">
-        <label>
-          Название страницы в меню
-          <input
-            value={pageNames[page] ?? PAGE_LABELS[page]}
-            onChange={e => setPageNames(p => ({ ...p, [page]: e.target.value }))}
-          />
-        </label>
+      {!loading && <div className="content-form">
+        <div className="form-section">
+          <div className="form-section-header">
+            <span className="form-section-icon"><i className={`fa-solid ${PAGE_META[page].icon}`} /></span>
+            <span className="form-section-title">Название в меню</span>
+          </div>
+          <div className="form-section-body">
+            <div className="form-field">
+              <label className="form-field-label" htmlFor={`menu-name-${page}`}>
+                Название страницы в меню
+              </label>
+              <input
+                id={`menu-name-${page}`}
+                value={pageNames[page] ?? PAGE_META[page].label}
+                onChange={e => setPageNames(p => ({ ...p, [page]: e.target.value }))}
+              />
+            </div>
+          </div>
+        </div>
 
-        {imageFields.map(key => (
-          <ImagePickerField key={key} label={key} value={content[key] || ''} onChange={v => setContent(p => ({ ...p, [key]: v }))} />
+        {groups.map(group => (
+          <div key={group.title} className="form-section">
+            <div className="form-section-header">
+              <span className="form-section-icon"><i className={`fa-solid ${group.icon}`} /></span>
+              <span className="form-section-title">{group.title}</span>
+            </div>
+            <div className="form-section-body">
+              {group.fields.map(field => (
+                <div key={field.key} className="form-field">
+                  <label className="form-field-label" htmlFor={`${page}-${field.key}`}>
+                    <span>{FIELD_LABELS[field.key] || field.key}</span>
+                    <span className="form-field-tag">{field.key}</span>
+                  </label>
+                  {field.area === 'image' ? (
+                    <ImagePickerField
+                      value={content[field.key] || ''}
+                      onChange={v => setContent(p => ({ ...p, [field.key]: v }))}
+                    />
+                  ) : field.area === 'textarea' ? (
+                    <textarea
+                      id={`${page}-${field.key}`}
+                      value={content[field.key] || ''}
+                      onChange={e => setContent(p => ({ ...p, [field.key]: e.target.value }))}
+                      rows={4}
+                    />
+                  ) : (
+                    <input
+                      id={`${page}-${field.key}`}
+                      value={content[field.key] || ''}
+                      onChange={e => setContent(p => ({ ...p, [field.key]: e.target.value }))}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         ))}
 
-        {fields.map(key => (
-          <label key={key}>
-            {key}
-            <textarea value={content[key] || ''} onChange={e => setContent(p => ({ ...p, [key]: e.target.value }))} rows={4} />
-          </label>
-        ))}
-        <button onClick={handleSave} className="btn btn-primary">Сохранить</button>
+        <div className="form-actions">
+          {error && <span className="save-status error"><i className="fa-solid fa-triangle-exclamation" /> {error}</span>}
+          {saved && !error && <span className="save-status"><i className="fa-solid fa-check" /> Сохранено</span>}
+          <button className="save-btn" onClick={handleSave} disabled={saving}>
+            {saving ? (
+              <>
+                <span className="save-btn-spinner" aria-hidden="true" />
+                Сохранение…
+              </>
+            ) : (
+              <>
+                <i className="fa-solid fa-floppy-disk" aria-hidden="true" />
+                Сохранить
+              </>
+            )}
+          </button>
+        </div>
       </div>}
     </div>
   );

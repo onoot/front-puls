@@ -159,13 +159,27 @@
     gap: 10px;
 }
 
+.page-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #1e293b;
+    text-wrap: balance;
+}
+
+.page-subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #64748b;
+}
+
 /* ==================== DATA TABLE ==================== */
 .data-table {
     width: 100%;
     background: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    border: 1px solid #e2e8f0;
 }
 
 .data-table table {
@@ -177,17 +191,27 @@
 .data-table td {
     padding: 12px 16px;
     text-align: left;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #eef2f7;
     font-size: 14px;
+    vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .data-table th {
     background: #f8fafc;
     font-weight: 600;
-    color: #334155;
+    color: #475569;
+    white-space: nowrap;
 }
 
-.data-table tr:hover {
+.data-table tbody tr {
+    transition: background-color .12s ease;
+}
+
+.data-table tbody tr:hover {
     background: #f8fafc;
 }
 
@@ -202,11 +226,15 @@
     border-radius: 4px;
     border: none;
     cursor: pointer;
-    transition: opacity .2s;
+    transition: background-color .15s ease, transform .1s ease;
+}
+
+.table-action .btn-sm:active {
+    transform: scale(.96);
 }
 
 .table-action .btn-sm:hover {
-    opacity: .85;
+    opacity: .88;
 }
 
 .btn-success {
@@ -214,9 +242,17 @@
     color: #fff;
 }
 
+.btn-success:hover:not(:disabled) {
+    background: #218838;
+}
+
 .btn-danger {
     background: #dc3545;
     color: #fff;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #c82333;
 }
 
 .photo-cell {
@@ -226,8 +262,10 @@
 .photo-cell img {
     max-width: 50px;
     max-height: 50px;
-    border-radius: 4px;
+    border-radius: 6px;
     object-fit: cover;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    border: 1px solid #eef2f7;
 }
 
 .inherited-photo {
@@ -245,29 +283,37 @@
 .entity-form {
     background: #fff;
     padding: 24px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    border: 1px solid #e2e8f0;
+    max-width: 900px;
 }
 
 .entity-form label {
     display: block;
     font-weight: 500;
     margin-bottom: 4px;
-    font-size: 14px;
+    font-size: 13px;
     color: #334155;
+}
+
+.entity-form label:not(:first-child) {
+    margin-top: 2px;
 }
 
 .entity-form input,
 .entity-form select,
 .entity-form textarea {
     width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
     font-size: 14px;
-    margin-bottom: 12px;
-    transition: border-color .2s;
+    margin-bottom: 14px;
+    transition: border-color .15s ease, box-shadow .15s ease;
     color: #111827;
+    box-sizing: border-box;
+    font-family: inherit;
 }
 
 .entity-form input::placeholder,
@@ -590,8 +636,22 @@
     font-size: 14px;
     font-weight: 500;
     text-decoration: none;
-    transition: all .2s;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease, transform .1s ease;
     text-align: center;
+}
+
+.btn:active:not(:disabled) {
+    transform: scale(.96);
+}
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+}
+
+.btn:disabled {
+    opacity: .6;
+    cursor: default;
 }
 
 .btn-primary {
@@ -599,7 +659,7 @@
     color: #fff;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
     background: #2563eb;
 }
 
@@ -627,7 +687,8 @@
 
 /* ==================== CHECKBOX ==================== */
 .entity-form input[type="checkbox"],
-.sidebar-nav input[type="checkbox"] {
+.sidebar-nav input[type="checkbox"],
+.data-table input[type="checkbox"] {
     width: 18px;
     height: 18px;
     margin: 0;
@@ -700,6 +761,15 @@
     margin-bottom: 20px;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+.form-header h1,
+.form-header .title-text,
+.title-text {
+    margin: 0;
+    font-size: 22px;
+    color: #1e293b;
+    text-wrap: balance;
 }
 
 .form-header .btn-secondary {
@@ -1135,4 +1205,201 @@
     color: #6c757d;
     gap: 12px;
     font-size: 14px;
+}
+
+/* ==================== CONTENT FORM (pages / company info) ==================== */
+.content-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 900px;
+}
+
+.content-form .entity-form {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.form-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    transition: box-shadow .2s ease, border-color .2s ease;
+}
+
+.form-section:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+
+.form-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.form-section-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.form-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.form-section-body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-field-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+}
+
+.form-field-tag {
+    font-size: 11px;
+    font-weight: 500;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: #94a3b8;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 0 5px;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1e293b;
+    background: #fff;
+    box-sizing: border-box;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.5;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: #9ca3af;
+}
+
+.form-field-hint {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.form-actions {
+    position: sticky;
+    bottom: 16px;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 14px 18px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(15,23,42,.12);
+}
+
+.save-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #16a34a;
+    font-variant-numeric: tabular-nums;
+}
+
+.save-status.error {
+    color: #dc2626;
+}
+
+.save-status.saving {
+    color: #64748b;
+}
+
+.save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 7px;
+    background: #3b82f6;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s ease, transform .1s ease;
+}
+
+.save-btn:hover:not(:disabled) {
+    background: #2563eb;
+}
+
+.save-btn:active:not(:disabled) {
+    transform: scale(.96);
+}
+
+.save-btn:disabled {
+    opacity: .7;
+    cursor: default;
+}
+
+.save-btn-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: seoSpin .7s linear infinite;
 }
