@@ -7,7 +7,7 @@ class SeoHttp extends HttpClient {
   }
 
   async list(page?: number, limit?: number) {
-    return this.post<PaginatedResult<Seo>>('/seo/list', { page, limit });
+    return this.post<Seo[] | PaginatedResult<Seo>>('/seo/list', { page, limit });
   }
 
   async save(data: { page: string; title: string; description?: string; keywords?: string }) {
