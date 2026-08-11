@@ -52,6 +52,7 @@ export interface Product {
   id: number;
   sku: string;
   name?: string | null;
+  displayName?: string | null;
   description: string | null;
   photo: string | null;
   categoryId: number | null;

@@ -95,7 +95,7 @@ export function CatalogPage() {
                     <Link to={`/product/${p.id}`} className="dns-card">
                       <div className="dns-card-main">
                         {main ? (
-                          <img src={`/uploads/${main}`} alt={p.name || p.sku} />
+                          <img src={`/uploads/${main}`} alt={p.displayName || p.sku} />
                         ) : (
                           <div className="dns-card-placeholder"><i className="fa-regular fa-image" /></div>
                         )}
@@ -107,7 +107,7 @@ export function CatalogPage() {
                           ))}
                         </div>
                       )}
-                      <div className="dns-card-title">{p.name || p.sku}</div>
+                      <div className="dns-card-title">{p.displayName || p.sku}</div>
                     </Link>
                   </div>
                 );

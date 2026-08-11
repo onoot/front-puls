@@ -47,7 +47,7 @@ export function ProductsPage() {
           {products.map(p => (
             <tr key={p.id}>
               <td>{p.id}</td>
-              <td>{p.name || p.sku}</td>
+              <td>{p.displayName || p.sku}</td>
               <td>{p.sku}</td>
               <td>
                 {(() => {

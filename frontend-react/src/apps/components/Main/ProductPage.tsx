@@ -31,7 +31,7 @@ export function ProductPage() {
   }, [id]);
 
   useEffect(() => {
-    if (product) document.title = `${product.name || product.sku} | Пульсар`;
+    if (product) document.title = `${product.displayName || product.sku} | Пульсар`;
   }, [product]);
 
   if (!product) return <div className="space"><div className="container"><div className="section-loading"><Preloader /></div></div></div>;
@@ -50,11 +50,11 @@ export function ProductPage() {
   return (
     <>
       <Breadcrumb
-        title={product.name || product.sku}
+        title={product.displayName || product.sku}
         items={[
           { label: 'Главная', href: '/' },
           { label: 'Каталог', href: '/catalog' },
-          { label: product.name || product.sku },
+          { label: product.displayName || product.sku },
         ]}
       />
 
@@ -64,7 +64,7 @@ export function ProductPage() {
             <div className="product-card-gallery">
               <div className="product-card-main-img">
                 {activePhoto ? (
-                  <img src={`/uploads/${activePhoto}`} alt={product.name || product.sku} />
+                  <img src={`/uploads/${activePhoto}`} alt={product.displayName || product.sku} />
                 ) : (
                   <div className="product-card-no-img">
                     <i className="fa-regular fa-image" />
@@ -91,7 +91,7 @@ export function ProductPage() {
             <div className="product-card-info">
               <div className="product-card-header">
                 <span className="product-card-category">{product.categoryName || 'Прочее'}</span>
-                <h1 className="product-card-title">{product.name || product.sku}</h1>
+                <h1 className="product-card-title">{product.displayName || product.sku}</h1>
                 <p className="product-card-sku">Артикул: {product.sku}</p>
               </div>
 
