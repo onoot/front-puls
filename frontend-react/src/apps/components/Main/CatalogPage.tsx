@@ -4,6 +4,7 @@ import { ProductCategory, Product } from '../../types';
 import { catalogHttp } from '../../http/catalog';
 import { Breadcrumb } from '../Common/Breadcrumb';
 import { Preloader } from '../Common/Preloader';
+import { ProgressiveImage } from '../Common/ProgressiveImage';
 
 export function CatalogPage() {
   const { categoryId } = useParams();
@@ -95,7 +96,7 @@ export function CatalogPage() {
                     <Link to={`/product/${p.id}`} className="dns-card">
                       <div className="dns-card-main">
                         {main ? (
-                          <img src={`/uploads/${main}`} alt={p.displayName || p.sku} />
+                          <ProgressiveImage src={`/uploads/${main}`} alt={p.displayName || p.sku} loading="lazy" />
                         ) : (
                           <div className="dns-card-placeholder"><i className="fa-regular fa-image" /></div>
                         )}
@@ -103,7 +104,7 @@ export function CatalogPage() {
                       {photos.length > 1 && (
                         <div className="dns-card-thumbs">
                           {photos.map((ph, i) => (
-                            <img key={i} src={`/uploads/${ph}`} alt="" className={i === 0 ? 'active' : ''} />
+                            <ProgressiveImage key={i} src={`/uploads/${ph}`} alt="" className={i === 0 ? 'active' : ''} />
                           ))}
                         </div>
                       )}

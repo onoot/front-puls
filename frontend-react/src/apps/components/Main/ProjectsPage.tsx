@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Project, ProjectCategory } from '../../types';
 import { projectsHttp } from '../../http/projects';
 import { Preloader } from '../Common/Preloader';
+import { ProgressiveImage } from '../Common/ProgressiveImage';
 
 export function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -46,7 +47,7 @@ export function ProjectsPage() {
             <div key={project.id} className="col-xl-4 col-md-6">
               <div className="project-card">
                 <div className="project-img">
-                  {project.photo && <img src={`/uploads/${project.photo}`} alt={project.name} />}
+                  {project.photo && <ProgressiveImage src={`/uploads/${project.photo}`} alt={project.name} loading="lazy" />}
                 </div>
                 <div className="project-content-wrap">
                   <div className="project-content">

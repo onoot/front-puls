@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { companyHttp } from '../../http/company';
+import { ProgressiveImage } from './ProgressiveImage';
 
 export function Footer() {
   const [company, setCompany] = useState<Record<string, string>>({});
@@ -18,7 +19,7 @@ export function Footer() {
               <div className="footer-brand">
                 {company.logo ? (
                   <Link to="/" className="footer-logo">
-                    <img src={`/uploads/${company.logo}`} alt="Пульсар" />
+                    <ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="lazy" />
                   </Link>
                 ) : (
                   <Link to="/" className="footer-logo-text">Пульсар</Link>

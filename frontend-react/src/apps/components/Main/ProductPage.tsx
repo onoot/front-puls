@@ -4,6 +4,7 @@ import { Product, PropertyField } from '../../types';
 import { catalogHttp } from '../../http/catalog';
 import { Breadcrumb } from '../Common/Breadcrumb';
 import { Preloader } from '../Common/Preloader';
+import { ProgressiveImage } from '../Common/ProgressiveImage';
 
 type TabId = 'description' | 'specs';
 
@@ -64,7 +65,7 @@ export function ProductPage() {
             <div className="product-card-gallery">
               <div className="product-card-main-img">
                 {activePhoto ? (
-                  <img src={`/uploads/${activePhoto}`} alt={product.displayName || product.sku} />
+                  <ProgressiveImage src={`/uploads/${activePhoto}`} alt={product.displayName || product.sku} loading="eager" />
                 ) : (
                   <div className="product-card-no-img">
                     <i className="fa-regular fa-image" />
@@ -81,7 +82,7 @@ export function ProductPage() {
                       className={`product-card-thumb ${activePhoto === name ? 'active' : ''}`}
                       onClick={() => setActivePhoto(name)}
                     >
-                      <img src={`/uploads/${name}`} alt="" />
+                      <ProgressiveImage src={`/uploads/${name}`} alt="" />
                     </button>
                   ))}
                 </div>

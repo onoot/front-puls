@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { companyHttp } from '../../http/company';
 import { catalogHttp } from '../../http/catalog';
+import { ProgressiveImage } from './ProgressiveImage';
 
 interface CategoryNode {
   id: number;
@@ -117,7 +118,7 @@ export function Header() {
                 <div className="header-logo">
                   <Link to="/">
                     {company.logo ? (
-                      <img src={`/uploads/${company.logo}`} alt="Пульсар" />
+                      <ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="eager" />
                     ) : (
                       <span style={{ fontFamily: 'var(--title-font)', fontSize: 24, fontWeight: 700 }}>Пульсар</span>
                     )}
@@ -234,7 +235,7 @@ export function Header() {
         <div className="mobile-sidebar-header">
           <div className="mobile-sidebar-logo">
             {company.logo ? (
-              <Link to="/" onClick={() => setMenuOpen(false)}><img src={`/uploads/${company.logo}`} alt="Пульсар" /></Link>
+              <Link to="/" onClick={() => setMenuOpen(false)}><ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="eager" /></Link>
             ) : (
               <Link to="/" onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--title-font)', fontSize: 20, fontWeight: 700 }}>Пульсар</Link>
             )}

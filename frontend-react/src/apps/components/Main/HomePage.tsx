@@ -12,6 +12,7 @@ import { lettersHttp } from '../../http/letters';
 import { projectsHttp } from '../../http/projects';
 import { pagesHttp } from '../../http/pages';
 import { Preloader } from '../Common/Preloader';
+import { ProgressiveImage } from '../Common/ProgressiveImage';
 
 export function HomePage() {
   const [slides, setSlides] = useState<Slide[] | null>(null);
@@ -48,7 +49,7 @@ export function HomePage() {
               <SwiperSlide key={slide.id}>
                 <div className="hero-slide">
                   {slide.photo ? (
-                    <img className="hero-slide-img" src={`/uploads/${slide.photo}`} alt={slide.name ?? ''} />
+                    <ProgressiveImage className="hero-slide-img" src={`/uploads/${slide.photo}`} alt={slide.name ?? ''} loading="eager" />
                   ) : (
                     <div className="hero-slide-img hero-slide-img--fallback" />
                   )}
@@ -91,7 +92,7 @@ export function HomePage() {
             <div className="col-xl-6 mb-40">
               <div className="img-box2">
                 {company.logo ? (
-                  <div className="img1"><img src={`/uploads/${company.logo}`} alt="О компании" /></div>
+                  <div className="img1"><ProgressiveImage src={`/uploads/${company.logo}`} alt="О компании" /></div>
                 ) : (
                   <div className="block-skeleton" style={{ width: '100%', height: 300 }} />
                 )}
@@ -141,7 +142,7 @@ export function HomePage() {
                 <SwiperSlide key={project.id}>
                   <div className="themeholy-product">
                     <div className="product-img">
-                      {project.photo && <img src={`/uploads/${project.photo}`} alt={project.name} loading="lazy" />}
+                      {project.photo && <ProgressiveImage src={`/uploads/${project.photo}`} alt={project.name} loading="lazy" />}
                     </div>
                     <h3 className="product-title">{project.name}</h3>
                   </div>
@@ -163,7 +164,7 @@ export function HomePage() {
             <div className="row gy-30 justify-content-center">
               {brands.map(brand => (
                 <div key={brand.id} className="col-lg-3 col-md-4 col-sm-6 text-center">
-                  {brand.photo && <img src={`/uploads/${brand.photo}`} alt={brand.name} style={{ maxHeight: 80 }} loading="lazy" />}
+                  {brand.photo && <ProgressiveImage src={`/uploads/${brand.photo}`} alt={brand.name} style={{ maxHeight: 80 }} loading="lazy" />}
                 </div>
               ))}
             </div>
@@ -182,7 +183,7 @@ export function HomePage() {
             <div className="row gy-30 justify-content-center">
               {letters.map(letter => (
                 <div key={letter.id} className="col-lg-3 col-md-4 col-sm-6 text-center">
-                  {letter.photo && <img src={`/uploads/${letter.photo}`} alt={letter.name} className="letters-item" loading="lazy" />}
+                  {letter.photo && <ProgressiveImage src={`/uploads/${letter.photo}`} alt={letter.name} className="letters-item" loading="lazy" />}
                 </div>
               ))}
             </div>
