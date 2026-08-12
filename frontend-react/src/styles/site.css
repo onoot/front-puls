@@ -2,6 +2,7 @@
   --theme-color: #0071ac;
   --theme-color-2: #00588a;
   --accent-color: #F58220;
+  --accent-color-soft: #fff1e0;
   --gray-color: #6c757d;
   --light-gray: #f4f6f9;
   --white-color: #fff;
@@ -1082,7 +1083,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #fff1e0;
+  background: var(--accent-color-soft);
   border: 1px solid var(--accent-color);
   color: var(--accent-color);
   cursor: pointer;
