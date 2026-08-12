@@ -783,7 +783,8 @@
 /* --- Slide --- */
 .hero-slide {
   position: relative;
-  height: 572px;
+  height: 99svh;
+  min-height: 480px;
   overflow: hidden;
 }
 
@@ -1971,7 +1972,6 @@
 
 @media (max-width: 991px) {
   .space { padding: 50px 0; }
-  .hero-slide { height: 462px; }
   .hero-slide-title { font-size: 28px; }
 }
 
@@ -1980,7 +1980,6 @@
   .sec-title { font-size: 26px; }
   .breadcumb-title { font-size: 26px; }
   .product-card { grid-template-columns: 1fr; gap: 30px; }
-  .hero-slide { height: 396px; }
   .hero-slide-title { font-size: 22px; }
   .hero-slide-desc { font-size: 14px; margin-bottom: 16px; }
   .hero-slide-btn { padding: 10px 22px; font-size: 14px; }
