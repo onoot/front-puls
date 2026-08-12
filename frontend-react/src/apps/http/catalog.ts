@@ -10,11 +10,12 @@ class CatalogHttp extends HttpClient {
     return this.get<ProductCategory[]>('/catalog/category-tree');
   }
 
-  async getPublicProducts(categoryId?: number, page = 1, search?: string) {
+  async getPublicProducts(categoryId?: number, page = 1, search?: string, limit?: number) {
     const params = new URLSearchParams();
     if (categoryId !== undefined) params.set('categoryId', String(categoryId));
     params.set('page', String(page));
     if (search) params.set('search', search);
+    if (limit !== undefined) params.set('limit', String(limit));
     return this.get<PaginatedResult<Product>>(`/catalog/products?${params}`);
   }
 

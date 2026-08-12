@@ -1,10 +1,13 @@
-import { useState, useEffect, useCallback, JSX } from 'react';
+import { useState, useEffect, useCallback, useMemo, JSX } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { ProductCategory, Product } from '../../types';
 import { catalogHttp } from '../../http/catalog';
 import { Breadcrumb } from '../Common/Breadcrumb';
 import { Preloader } from '../Common/Preloader';
 import { ProgressiveImage } from '../Common/ProgressiveImage';
+import { CatalogFilters, SelectedFilters, matchesFilters } from './CatalogFilters';
+
+const PAGE_SIZE = 12;
 
 export function CatalogPage() {
   const { categoryId } = useParams();
@@ -12,29 +15,34 @@ export function CatalogPage() {
   const search = searchParams.get('search') || '';
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const [filters, setFilters] = useState<SelectedFilters>({});
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     catalogHttp.getCategoryTree().then(r => setCategories(r.data));
   }, []);
 
-  useEffect(() => { setPage(1); }, [categoryId, search]);
+  useEffect(() => { setPage(1); setFilters({}); }, [categoryId, search]);
 
   const loadProducts = useCallback(() => {
     setLoading(true);
     const catId = categoryId !== undefined ? Number(categoryId) : undefined;
-    catalogHttp.getPublicProducts(catId, page, search || undefined)
-      .then(r => {
-        setProducts(r.data.items);
-        setTotalPages(r.data.totalPages);
-      })
+    catalogHttp.getPublicProducts(catId, 1, search || undefined, 500)
+      .then(r => setProducts(r.data.items))
       .finally(() => setLoading(false));
-  }, [categoryId, page, search]);
+  }, [categoryId, search]);
 
   useEffect(() => { loadProducts(); }, [loadProducts]);
+
+  const filtered = useMemo(() => products.filter(p => matchesFilters(p, filters)), [products, filters]);
+
+  useEffect(() => { setPage(1); }, [filters]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paged = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   const toggleExpand = (id: number, e: React.MouseEvent) => {
     e.preventDefault();
@@ -82,13 +90,23 @@ export function CatalogPage() {
                   {renderCategoryTree(categories, expanded, toggleExpand, Number(categoryId))}
                 </ul>
               </div>
+              <CatalogFilters products={products} selected={filters} onFilterChange={setFilters} />
             </div>
           </aside>
           <div className="col-lg-9">
             {loading && <div className="section-loading"><Preloader /></div>}
-            {!loading && <div className="row gy-30">
-              {products.length === 0 && <div className="col-12 text-center" style={{ padding: 60, color: '#999' }}>Товары не найдены</div>}
-              {products.map(p => {
+            {!loading && <>
+              <div className="catalog-results-info">
+                Найдено: {filtered.length}
+                {Object.values(filters).some(a => a.length > 0) && (
+                  <button type="button" className="catalog-filters-clear" onClick={() => setFilters({})}>
+                    Сбросить фильтры
+                  </button>
+                )}
+              </div>
+              <div className="row gy-30">
+              {paged.length === 0 && <div className="col-12 text-center" style={{ padding: 60, color: '#999' }}>Товары не найдены</div>}
+              {paged.map(p => {
                 const photos = p.ownPhotos && p.ownPhotos.length > 0 ? p.ownPhotos : (p.mainPhoto ? [p.mainPhoto] : []);
                 const main = p.mainPhoto || p.categoryPhoto || null;
                 return (
@@ -113,10 +131,11 @@ export function CatalogPage() {
                   </div>
                 );
               })}
-            </div>}
+            </div>
             {totalPages > 1 && (
-              <CatalogPaginator page={page} totalPages={totalPages} onPageChange={setPage} />
+              <CatalogPaginator page={currentPage} totalPages={totalPages} onPageChange={setPage} />
             )}
+            </>}
           </div>
         </div>
       </div>
