@@ -83,6 +83,23 @@
   top: 0;
   z-index: 998;
   border-top: 1px solid #e9ecef;
+  transition: box-shadow 0.3s ease;
+}
+
+.sticky-wrapper.is-scrolled {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  animation: headerSlideDown 0.35s cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes headerSlideDown {
+  from { transform: translateY(-110%); }
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-wrapper.is-scrolled {
+    animation: none;
+  }
 }
 
 .menu-area { padding: 0; }

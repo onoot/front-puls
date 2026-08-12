@@ -19,6 +19,7 @@ export function Header() {
   const [company, setCompany] = useState<Record<string, string>>({});
   const [categories, setCategories] = useState<CategoryNode[]>([]);
   const [openSubmenus, setOpenSubmenus] = useState<Record<number, boolean>>({});
+  const [scrolled, setScrolled] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -42,6 +43,13 @@ export function Header() {
     }
     return () => { document.body.style.overflow = ''; };
   }, [searchOpen]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 100);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const toggleSubmenu = (id: number) => {
     setOpenSubmenus(prev => ({ ...prev, [id]: !prev[id] }));
@@ -110,7 +118,7 @@ export function Header() {
         </div>
       </div>
 
-      <div className="sticky-wrapper">
+      <div className={`sticky-wrapper${scrolled ? ' is-scrolled' : ''}`}>
         <div className="menu-area">
           <div className="container">
             <div className="row align-items-center justify-content-between">
