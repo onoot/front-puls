@@ -43,7 +43,7 @@ export function SlideFormPage() {
       </div>
       <form onSubmit={handleSubmit} className="entity-form">
         <label>Название
-          <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required />
+          <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} />
         </label>
         <label>Описание
           <textarea rows={3} value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} />

@@ -55,7 +55,7 @@ export function SlidesPage() {
           {slides.map(s => (
             <tr key={s.id}>
               <td>{s.id}</td>
-              <td>{s.name}</td>
+              <td>{s.name || '—'}</td>
               <td className="photo-cell">{s.photo && <img src={`/uploads/${s.photo}`} alt="" />}</td>
               <td style={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.description || '—'}</td>
               <td>{s.link || '—'}</td>

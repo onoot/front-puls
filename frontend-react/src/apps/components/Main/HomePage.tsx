@@ -48,7 +48,7 @@ export function HomePage() {
               <SwiperSlide key={slide.id}>
                 <div className="hero-slide">
                   {slide.photo ? (
-                    <img className="hero-slide-img" src={`/uploads/${slide.photo}`} alt={slide.name} />
+                    <img className="hero-slide-img" src={`/uploads/${slide.photo}`} alt={slide.name ?? ''} />
                   ) : (
                     <div className="hero-slide-img hero-slide-img--fallback" />
                   )}

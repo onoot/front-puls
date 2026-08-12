@@ -125,7 +125,7 @@ export interface Seo {
 
 export interface Slide {
   id: number;
-  name: string;
+  name: string | null;
   description: string | null;
   photo: string | null;
   link: string | null;
