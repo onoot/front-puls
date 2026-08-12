@@ -46,7 +46,6 @@ function buildFacets(products: Product[]): Facet[] {
   }
   const facets: Facet[] = [];
   for (const [key, valMap] of map) {
-    if (valMap.size < 2) continue;
     facets.push({
       key,
       values: [...valMap.entries()]
@@ -67,7 +66,16 @@ export function CatalogFilters({ products, selected, onFilterChange }: CatalogFi
   const facets = useMemo(() => buildFacets(products), [products]);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
-  if (facets.length === 0) return null;
+  if (facets.length === 0) {
+    return (
+      <div className="widget widget_catalog_filters">
+        <div className="widget_filters_header">
+          <h3 className="widget_title">Фильтры</h3>
+        </div>
+        <p className="catalog-filters-empty">У товаров пока нет характеристик для фильтрации</p>
+      </div>
+    );
+  }
 
   const toggleValue = (key: string, value: string) => {
     const current = selected[key] ?? [];
