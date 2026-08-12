@@ -97,9 +97,10 @@ export function CatalogPage() {
             {loading && <div className="section-loading"><Preloader /></div>}
             {!loading && <>
               <div className="catalog-results-info">
-                Найдено: {filtered.length}
+                <span className="catalog-results-count">Найдено: <b>{filtered.length}</b></span>
                 {Object.values(filters).some(a => a.length > 0) && (
                   <button type="button" className="catalog-filters-clear" onClick={() => setFilters({})}>
+                    <i className="fa-regular fa-xmark" />
                     Сбросить фильтры
                   </button>
                 )}
