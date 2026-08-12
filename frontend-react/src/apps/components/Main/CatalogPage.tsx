@@ -96,7 +96,7 @@ export function CatalogPage() {
                     <Link to={`/product/${p.id}`} className="dns-card">
                       <div className="dns-card-main">
                         {main ? (
-                          <ProgressiveImage src={`/uploads/${main}`} alt={p.displayName || p.sku} loading="lazy" />
+                          <ProgressiveImage src={`/uploads/${main}`} alt={p.displayName || p.sku} loading="lazy" sizes="360px" />
                         ) : (
                           <div className="dns-card-placeholder"><i className="fa-regular fa-image" /></div>
                         )}
@@ -104,7 +104,7 @@ export function CatalogPage() {
                       {photos.length > 1 && (
                         <div className="dns-card-thumbs">
                           {photos.map((ph, i) => (
-                            <ProgressiveImage key={i} src={`/uploads/${ph}`} alt="" className={i === 0 ? 'active' : ''} />
+                            <ProgressiveImage key={i} src={`/uploads/${ph}`} alt="" className={i === 0 ? 'active' : ''} sizes="80px" />
                           ))}
                         </div>
                       )}

@@ -1,38 +1,53 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 
 interface ProgressiveImageProps {
   src: string;
+  mobileSrc?: string;
   alt?: string;
   className?: string;
   style?: React.CSSProperties;
   loading?: 'lazy' | 'eager';
+  sizes?: string;
 }
 
-export function ProgressiveImage({ src, alt = '', className = '', style, loading = 'lazy' }: ProgressiveImageProps) {
-  const [fullReady, setFullReady] = useState(false);
+const WIDTHS = [480, 768, 992, 1280, 1920, 2560];
 
-  useEffect(() => {
-    setFullReady(false);
-    if (!src.startsWith('/uploads/')) {
-      setFullReady(true);
-      return;
-    }
-    const img = new Image();
-    img.onload = () => setFullReady(true);
-    img.src = `${src}?type=full`;
-    return () => { img.onload = null; };
-  }, [src]);
+function buildSrcSet(src: string): string {
+  if (!src.startsWith('/uploads/')) return src;
+  return WIDTHS.map(w => `${src}?w=${w} ${w}w`).join(', ');
+}
 
-  const thumbSrc = src.startsWith('/uploads/') ? `${src}?type=thumb` : src;
-  const shown = fullReady ? src : thumbSrc;
+export function ProgressiveImage({ src, mobileSrc, alt = '', className = '', style, loading = 'lazy', sizes = '100vw' }: ProgressiveImageProps) {
+  const desktopSet = useMemo(() => buildSrcSet(src), [src]);
+  const mobileSet = useMemo(() => (mobileSrc ? buildSrcSet(mobileSrc) : ''), [mobileSrc]);
+
+  if (mobileSet) {
+    return (
+      <picture>
+        <source media="(max-width: 767px)" srcSet={mobileSet} sizes={sizes} />
+        <img
+          src={src}
+          srcSet={desktopSet}
+          sizes={sizes}
+          alt={alt}
+          loading={loading}
+          decoding="async"
+          className={className}
+          style={style}
+        />
+      </picture>
+    );
+  }
 
   return (
     <img
-      src={shown}
+      src={src}
+      srcSet={desktopSet}
+      sizes={sizes}
       alt={alt}
       loading={loading}
       decoding="async"
-      className={fullReady ? className : `${className} img-preview`.trim()}
+      className={className}
       style={style}
     />
   );

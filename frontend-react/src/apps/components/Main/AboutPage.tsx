@@ -28,7 +28,7 @@ export function AboutPage() {
           <div className="col-xl-6 mb-40">
             <div className="img-box2">
               {company.logo && (
-                <div className="img1"><ProgressiveImage src={`/uploads/${company.logo}`} alt="О компании" /></div>
+                <div className="img1"><ProgressiveImage src={`/uploads/${company.logo}`} alt="О компании" sizes="600px" /></div>
               )}
             </div>
           </div>
@@ -83,7 +83,7 @@ export function AboutPage() {
             <div className="row gy-40 justify-content-center">
               {letters.map(letter => (
                 <div key={letter.id} className="col-lg-3 col-md-4 col-sm-6 text-center">
-                  {letter.photo && <ProgressiveImage src={`/uploads/${letter.photo}`} alt={letter.name} style={{ maxHeight: 150 }} loading="lazy" />}
+                  {letter.photo && <ProgressiveImage src={`/uploads/${letter.photo}`} alt={letter.name} style={{ maxHeight: 150 }} loading="lazy" sizes="320px" />}
                 </div>
               ))}
             </div>

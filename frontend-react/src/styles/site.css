@@ -780,20 +780,26 @@
   100% { transform: scale(1.04) translate(-0.5%, -0.3%); }
 }
 
-/* --- Progressive image: light preview first, then full quality --- */
-img.img-preview {
-  filter: blur(14px) brightness(0.9);
-  transform: scale(1.04);
-  opacity: 0.7;
-  transition: filter 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
-}
-
 /* --- Slide --- */
 .hero-slide {
   position: relative;
   height: 99svh;
   min-height: 480px;
   overflow: hidden;
+}
+
+@media (max-width: 991.98px) {
+  .hero-slide {
+    height: 72svh;
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .hero-slide {
+    height: 56svh;
+    min-height: 340px;
+  }
 }
 
 .hero-slide-img {

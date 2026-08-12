@@ -19,7 +19,7 @@ export function Footer() {
               <div className="footer-brand">
                 {company.logo ? (
                   <Link to="/" className="footer-logo">
-                    <ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="lazy" />
+                    <ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="lazy" sizes="200px" />
                   </Link>
                 ) : (
                   <Link to="/" className="footer-logo-text">Пульсар</Link>

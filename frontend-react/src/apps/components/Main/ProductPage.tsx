@@ -65,7 +65,7 @@ export function ProductPage() {
             <div className="product-card-gallery">
               <div className="product-card-main-img">
                 {activePhoto ? (
-                  <ProgressiveImage src={`/uploads/${activePhoto}`} alt={product.displayName || product.sku} loading="eager" />
+                  <ProgressiveImage src={`/uploads/${activePhoto}`} alt={product.displayName || product.sku} loading="eager" sizes="640px" />
                 ) : (
                   <div className="product-card-no-img">
                     <i className="fa-regular fa-image" />
@@ -82,7 +82,7 @@ export function ProductPage() {
                       className={`product-card-thumb ${activePhoto === name ? 'active' : ''}`}
                       onClick={() => setActivePhoto(name)}
                     >
-                      <ProgressiveImage src={`/uploads/${name}`} alt="" />
+                      <ProgressiveImage src={`/uploads/${name}`} alt="" sizes="96px" />
                     </button>
                   ))}
                 </div>

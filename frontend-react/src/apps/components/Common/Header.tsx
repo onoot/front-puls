@@ -118,7 +118,7 @@ export function Header() {
                 <div className="header-logo">
                   <Link to="/">
                     {company.logo ? (
-                      <ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="eager" />
+                      <ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="eager" sizes="180px" />
                     ) : (
                       <span style={{ fontFamily: 'var(--title-font)', fontSize: 24, fontWeight: 700 }}>Пульсар</span>
                     )}
@@ -235,7 +235,7 @@ export function Header() {
         <div className="mobile-sidebar-header">
           <div className="mobile-sidebar-logo">
             {company.logo ? (
-              <Link to="/" onClick={() => setMenuOpen(false)}><ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="eager" /></Link>
+              <Link to="/" onClick={() => setMenuOpen(false)}><ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="eager" sizes="180px" /></Link>
             ) : (
               <Link to="/" onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--title-font)', fontSize: 20, fontWeight: 700 }}>Пульсар</Link>
             )}

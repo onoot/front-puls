@@ -7,7 +7,7 @@ export function SlideFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
-  const [form, setForm] = useState({ name: '', description: '', photo: '', link: '', sort: 0, visible: true });
+  const [form, setForm] = useState({ name: '', description: '', photo: '', mobilePhoto: '', link: '', sort: 0, visible: true });
 
   useEffect(() => {
     if (id) {
@@ -17,6 +17,7 @@ export function SlideFormPage() {
           name: slide.name || '',
           description: slide.description || '',
           photo: slide.photo || '',
+          mobilePhoto: slide.mobilePhoto || '',
           link: slide.link || '',
           sort: slide.sort || 0,
           visible: slide.visible,
@@ -52,6 +53,7 @@ export function SlideFormPage() {
           <input value={form.link} onChange={e => setForm(p => ({ ...p, link: e.target.value }))} placeholder="/catalog" />
         </label>
         <ImagePickerField label="Фото" value={form.photo} onChange={v => setForm(p => ({ ...p, photo: v }))} />
+        <ImagePickerField label="Фото для мобильных (опционально)" value={form.mobilePhoto} onChange={v => setForm(p => ({ ...p, mobilePhoto: v }))} />
         <label>Сортировка
           <input type="number" value={form.sort} onChange={e => setForm(p => ({ ...p, sort: Number(e.target.value) }))} />
         </label>

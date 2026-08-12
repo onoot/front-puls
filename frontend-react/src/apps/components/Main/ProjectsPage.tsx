@@ -47,7 +47,7 @@ export function ProjectsPage() {
             <div key={project.id} className="col-xl-4 col-md-6">
               <div className="project-card">
                 <div className="project-img">
-                  {project.photo && <ProgressiveImage src={`/uploads/${project.photo}`} alt={project.name} loading="lazy" />}
+                  {project.photo && <ProgressiveImage src={`/uploads/${project.photo}`} alt={project.name} loading="lazy" sizes="360px" />}
                 </div>
                 <div className="project-content-wrap">
                   <div className="project-content">
