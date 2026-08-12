@@ -181,10 +181,10 @@ export function Header() {
                     <div className="col-auto d-block ms-auto">
                       <div className="header-button">
                         <button className="themeholy-menu-toggle d-block d-lg-none" type="button" onClick={() => setMenuOpen(true)}>
-                          <i className="fa-regular fa-bars" />
+                          <i className="fa-solid fa-bars" />
                         </button>
                         <button className="icon-btn searchBoxToggler" type="button" onClick={() => setSearchOpen(true)}>
-                          <i className="fa-regular fa-search" />
+                          <i className="fa-solid fa-search" />
                         </button>
                       </div>
                     </div>
@@ -204,7 +204,7 @@ export function Header() {
             </button>
             <div className="search-popup-inner">
               <div className="search-popup-header">
-                <i className="fa-regular fa-magnifying-glass" />
+                <i className="fa-solid fa-magnifying-glass" />
                 <span>Поиск по сайту</span>
               </div>
               <form onSubmit={handleSearch}>
@@ -219,7 +219,7 @@ export function Header() {
                 />
                 <button type="submit">
                   <span>Найти</span>
-                  <i className="fa-regular fa-arrow-right" />
+                  <i className="fa-solid fa-arrow-right" />
                 </button>
               </form>
               <div className="search-popup-hint">

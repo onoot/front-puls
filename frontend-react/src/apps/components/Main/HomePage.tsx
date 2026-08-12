@@ -65,7 +65,7 @@ export function HomePage() {
                     {slide.description && <p className="hero-slide-desc">{slide.description}</p>}
                     {slide.link && (
                       <Link to={slide.link} className="hero-slide-btn">
-                        Подробнее <i className="fa-regular fa-arrow-right" />
+                        Подробнее <i className="fa-solid fa-arrow-right" />
                       </Link>
                     )}
                   </div>

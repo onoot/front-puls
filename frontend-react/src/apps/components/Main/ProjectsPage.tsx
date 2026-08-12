@@ -52,7 +52,7 @@ export function ProjectsPage() {
                 <div className="project-content-wrap">
                   <div className="project-content">
                     <h3 className="box-title">
-                      <a href="#">{project.name}</a>
+                      {project.name}
                     </h3>
                     {project.description && <p style={{ marginTop: 8, fontSize: 14 }}>{project.description}</p>}
                   </div>

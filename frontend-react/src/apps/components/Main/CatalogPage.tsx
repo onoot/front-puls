@@ -100,7 +100,7 @@ export function CatalogPage() {
                 <span className="catalog-results-count">Найдено: <b>{filtered.length}</b></span>
                 {Object.values(filters).some(a => a.length > 0) && (
                   <button type="button" className="catalog-filters-clear" onClick={() => setFilters({})}>
-                    <i className="fa-regular fa-xmark" />
+                    <i className="fa-solid fa-xmark" />
                     Сбросить фильтры
                   </button>
                 )}

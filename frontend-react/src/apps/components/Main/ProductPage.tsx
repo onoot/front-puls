@@ -103,14 +103,14 @@ export function ProductPage() {
                     className={`product-tabs-btn${activeTab === 'description' ? ' active' : ''}`}
                     onClick={() => setActiveTab('description')}
                   >
-                    <i className="fa-regular fa-align-left" /> Описание
+                    <i className="fa-solid fa-align-left" /> Описание
                   </button>
                   <button
                     type="button"
                     className={`product-tabs-btn${activeTab === 'specs' ? ' active' : ''}`}
                     onClick={() => setActiveTab('specs')}
                   >
-                    <i className="fa-regular fa-list" /> Характеристики
+                    <i className="fa-solid fa-list" /> Характеристики
                   </button>
                 </div>
                 <div className="product-tabs-content">
@@ -147,7 +147,7 @@ export function ProductPage() {
               {product.documents && product.documents.length > 0 && (
                 <div className="product-card-docs">
                   <h3 className="product-card-section-title">
-                    <i className="fa-regular fa-file-lines" /> Документы
+                    <i className="fa-solid fa-file-lines" /> Документы
                   </h3>
                   <ul>
                     {product.documents.map(doc => (
