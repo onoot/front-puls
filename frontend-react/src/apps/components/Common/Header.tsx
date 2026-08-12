@@ -177,12 +177,12 @@ export function Header() {
                           ))}
                         </ul>
                       </nav>
-                      <button className="themeholy-menu-toggle d-block d-lg-none" type="button" onClick={() => setMenuOpen(true)}>
-                        <i className="fa-regular fa-bars" />
-                      </button>
                     </div>
                     <div className="col-auto d-block ms-auto">
                       <div className="header-button">
+                        <button className="themeholy-menu-toggle d-block d-lg-none" type="button" onClick={() => setMenuOpen(true)}>
+                          <i className="fa-regular fa-bars" />
+                        </button>
                         <button className="icon-btn searchBoxToggler" type="button" onClick={() => setSearchOpen(true)}>
                           <i className="fa-regular fa-search" />
                         </button>
