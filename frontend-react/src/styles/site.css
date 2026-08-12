@@ -1069,9 +1069,9 @@
 }
 
 /* ==================== HEADER ==================== */
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (min-width: 760px) and (max-width: 1000px) {
   .menu-wrap .header-button {
-    margin-right: 14px;
+    margin-top: -12px;
   }
 }
 
