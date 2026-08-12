@@ -1068,21 +1068,10 @@
   flex-direction: column;
 }
 
-/* ==================== BREADCRUMB ==================== */
-@media (max-width: 1199.98px) {
-  .breadcumb-wrapper {
-    padding: 100px 0;
-  }
-  .breadcumb-title {
-    font-size: 34px;
-  }
-  .breadcumb-menu {
-    margin: 20px 0 -0.5em 0;
-  }
-  .breadcumb-menu li,
-  .breadcumb-menu a,
-  .breadcumb-menu span {
-    font-size: 15px;
+/* ==================== HEADER ==================== */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .menu-wrap .header-button {
+    margin-right: 14px;
   }
 }
 
