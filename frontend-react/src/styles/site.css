@@ -597,7 +597,7 @@
 }
 
 .footer-desc {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   line-height: 1.7;
   margin: 0;
@@ -630,20 +630,31 @@
 }
 
 .footer-links li {
-  margin-bottom: 10px;
+  display: block;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.footer-links li::after {
+  display: none;
 }
 
 .footer-links a {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
   font-size: 14px;
+  line-height: 1.6;
   transition: color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
 }
 
 .footer-links a:hover {
   color: var(--theme-color);
+}
+
+.footer-links a:focus-visible {
+  outline: 2px solid var(--theme-color);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .footer-contacts {
@@ -657,29 +668,38 @@
   align-items: flex-start;
   gap: 12px;
   margin-bottom: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
 }
 
 .footer-contacts li i {
   color: var(--theme-color);
   font-size: 15px;
-  margin-top: 3px;
+  line-height: 1;
+  width: 18px;
+  text-align: center;
+  margin-top: 2px;
   flex-shrink: 0;
 }
 
 .footer-contacts a {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer-contacts a:hover {
-  color: #fff;
+  color: var(--theme-color);
+}
+
+.footer-contacts a:focus-visible {
+  outline: 2px solid var(--theme-color);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .footer-about-block {
-  max-width: 300px;
+  max-width: 320px;
 }
 
 .footer-company-name {
@@ -690,8 +710,8 @@
 }
 
 .footer-about-text {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 14px;
   line-height: 1.7;
   margin: 0;
 }
@@ -703,13 +723,19 @@
 .footer-copyright {
   margin: 0;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .footer-credit {
   margin: 0;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 575px) {
+  .footer-bottom {
+    text-align: center;
+  }
 }
 
 /* ==================== HOME / HERO ==================== */
