@@ -29,7 +29,6 @@ export function Breadcrumb({ title, items, bgImage }: BreadcrumbProps) {
           <ul className="breadcumb-menu">
             {items.map((item, i) => (
               <li key={i}>
-                {i > 0 && <i className="fa-regular fa-chevron-right" />}
                 {item.href ? <Link to={item.href}>{item.label}</Link> : <span>{item.label}</span>}
               </li>
             ))}
