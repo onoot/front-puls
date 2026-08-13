@@ -20,6 +20,8 @@ const FIELD_LABELS: Record<string, string> = {
   deliveryDescription: 'Описание доставки',
   methods: 'Способы оплаты',
   methodsCaption: 'Заголовок способов оплаты',
+  keyPoints: 'Ключевые показатели (каждая строка — отдельный пункт)',
+  assortment: 'Ассортимент (каждая строка — отдельный пункт)',
   photo: 'Фото',
   leftBlockImage: 'Изображение левого блока',
 };
@@ -37,6 +39,10 @@ const FIELD_GROUPS: Record<string, { icon: string; title: string; fields: { key:
     { icon: 'fa-columns', title: 'Левый блок', fields: [
       { key: 'leftBlockCaption', area: 'input' },
       { key: 'leftBlockDescription', area: 'textarea' },
+    ] },
+    { icon: 'fa-list-check', title: 'Списки', fields: [
+      { key: 'keyPoints', area: 'textarea' },
+      { key: 'assortment', area: 'textarea' },
     ] },
   ],
   delivery: [

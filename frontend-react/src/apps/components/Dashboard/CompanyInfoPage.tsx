@@ -22,6 +22,8 @@ const GROUPS: { icon: string; title: string; fields: FieldDef[] }[] = [
     title: 'Логотип и шапка',
     fields: [
       { key: 'logo', label: 'Логотип', area: 'image' },
+      { key: 'logoLight', label: 'Логотип для тёмной темы', area: 'image' },
+      { key: 'logoDark', label: 'Логотип для светлой темы', area: 'image' },
       { key: 'headerPhoto', label: 'Фото шапки', area: 'image' },
     ],
   },
@@ -30,13 +32,37 @@ const GROUPS: { icon: string; title: string; fields: FieldDef[] }[] = [
     title: 'О компании',
     fields: [
       { key: 'slogan', label: 'Слоган', area: 'input' },
+      { key: 'aboutEyebrow', label: 'Надзаголовок «О компании»', area: 'input' },
+      { key: 'aboutTitle', label: 'Заголовок «О компании»', area: 'input' },
+      { key: 'aboutSubtitle', label: 'Подзаголовок «О компании»', area: 'input' },
       { key: 'map', label: 'Карта (HTML)', area: 'textarea' },
+    ],
+  },
+  {
+    icon: 'fa-book-open',
+    title: 'Страница «Каталог»',
+    fields: [
+      { key: 'catalogEyebrow', label: 'Надзаголовок каталога', area: 'input' },
+      { key: 'catalogTitle', label: 'Заголовок каталога', area: 'input' },
+      { key: 'catalogSubtitle', label: 'Подзаголовок каталога', area: 'input' },
+    ],
+  },
+  {
+    icon: 'fa-truck',
+    title: 'Страница «Доставка и оплата»',
+    fields: [
+      { key: 'deliveryEyebrow', label: 'Надзаголовок доставки', area: 'input' },
+      { key: 'deliveryTitle', label: 'Заголовок доставки', area: 'input' },
     ],
   },
   {
     icon: 'fa-envelope',
     title: 'Форма обратной связи',
     fields: [
+      { key: 'contactsEyebrow', label: 'Надзаголовок «Контакты»', area: 'input' },
+      { key: 'contactsTitle', label: 'Заголовок «Контакты»', area: 'input' },
+      { key: 'contactsSubtitle', label: 'Подзаголовок «Контакты»', area: 'input' },
+      { key: 'contactsHeader', label: 'Заголовок блока контактов', area: 'input' },
       { key: 'feedbackSubjects', label: 'Темы для обратной связи', area: 'textarea' },
     ],
   },
