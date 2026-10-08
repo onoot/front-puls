@@ -1656,6 +1656,26 @@
   align-items: start;
 }
 
+/* Contact page: details as a single vertical column next to the map. */
+.contact-info-column {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+
+.contact-info-column_list {
+  display: grid;
+  gap: 12px;
+}
+
+.contact-info-column .contact-info-card {
+  align-items: flex-start;
+}
+
+.contact-info-column .contact-form-header {
+  margin-bottom: 0;
+}
+
 /* ── Form Card ── */
 .contact-form-card {
   background: #fff;
