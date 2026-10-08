@@ -10,6 +10,7 @@ import { companyHttp } from '../../http/company';
 import { brandsHttp } from '../../http/brands';
 import { lettersHttp } from '../../http/letters';
 import { projectsHttp } from '../../http/projects';
+import { pickLogo } from '../Common/pickLogo';
 import { pagesHttp } from '../../http/pages';
 import { Preloader } from '../Common/Preloader';
 import { ProgressiveImage } from '../Common/ProgressiveImage';
@@ -128,8 +129,8 @@ export function HomePage() {
           <div className="row align-items-center">
             <div className="col-xl-6 mb-40">
               <div className="img-box2">
-                {company.logo ? (
-                  <div className="img1"><ProgressiveImage src={`/uploads/${company.logo}`} alt="О компании" sizes="600px" /></div>
+                {pickLogo(company) ? (
+                  <div className="img1"><ProgressiveImage src={`/uploads/${pickLogo(company)}`} alt="О компании" sizes="600px" /></div>
                 ) : (
                   <div className="block-skeleton" style={{ width: '100%', height: 300 }} />
                 )}
