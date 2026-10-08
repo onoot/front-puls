@@ -110,6 +110,8 @@ export interface ProjectCategory {
 export interface Review {
   id: number;
   name: string;
+  company: string | null;
+  message: string | null;
   photo: string | null;
   sort: number;
   visible: boolean;

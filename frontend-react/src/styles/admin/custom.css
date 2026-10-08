@@ -220,6 +220,12 @@
     gap: 6px;
 }
 
+.table-sub {
+    font-size: 13px;
+    color: #7a8699;
+    margin-top: 2px;
+}
+
 .table-action .btn-sm {
     padding: 4px 10px;
     font-size: 13px;
@@ -1294,6 +1300,32 @@
     border: 1px solid #e2e8f0;
     border-radius: 4px;
     padding: 0 5px;
+}
+
+.form-field-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.form-field-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #1e293b;
+    cursor: pointer;
+}
+
+.form-field-option input[type="radio"],
+.form-field-option input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: #ff5c28;
+}
+
+.form-field-option--check {
+    padding-top: 6px;
 }
 
 .form-field input,

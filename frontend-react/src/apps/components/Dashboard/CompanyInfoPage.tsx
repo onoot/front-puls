@@ -3,7 +3,12 @@ import { companyHttp } from '../../http/company';
 import { ImagePickerField } from '../Common/ImagePickerField';
 import { Preloader } from '../Common/Preloader';
 
-interface FieldDef { key: string; label: string; area: 'input' | 'textarea' | 'image' }
+interface FieldDef {
+  key: string;
+  label: string;
+  area: 'input' | 'textarea' | 'image' | 'radio' | 'checkbox';
+  options?: { value: string; label: string }[];
+}
 
 const GROUPS: { icon: string; title: string; fields: FieldDef[] }[] = [
   {
@@ -21,10 +26,46 @@ const GROUPS: { icon: string; title: string; fields: FieldDef[] }[] = [
     icon: 'fa-image',
     title: 'Логотип и шапка',
     fields: [
-      { key: 'logo', label: 'Логотип', area: 'image' },
-      { key: 'logoLight', label: 'Логотип для тёмной темы', area: 'image' },
-      { key: 'logoDark', label: 'Логотип для светлой темы', area: 'image' },
+      { key: 'logo', label: 'Логотип (светлая версия)', area: 'image' },
+      { key: 'logoDark', label: 'Логотип (тёмная версия)', area: 'image' },
       { key: 'headerPhoto', label: 'Фото шапки', area: 'image' },
+      {
+        key: 'headerVariant',
+        label: 'Тип шапки',
+        area: 'radio',
+        options: [
+          { value: 'light', label: 'Светлая версия' },
+          { value: 'dark', label: 'Тёмная версия' },
+        ],
+      },
+      { key: 'headerSwitchOnScroll', label: 'Менять на противоположную версию при прокрутке страницы', area: 'checkbox' },
+    ],
+  },
+  {
+    icon: 'fa-house',
+    title: 'Главная страница',
+    fields: [
+      { key: 'heroEyebrow', label: 'Надзаголовок главного экрана', area: 'input' },
+      { key: 'heroTitle', label: 'Заголовок главного экрана', area: 'input' },
+      { key: 'heroTitleAccent', label: 'Акцентная часть заголовка', area: 'input' },
+      { key: 'heroLead', label: 'Подзаголовок главного экрана', area: 'textarea' },
+      { key: 'heroButtonPrimary', label: 'Текст главной кнопки', area: 'input' },
+      { key: 'heroButtonSecondary', label: 'Текст второй кнопки', area: 'input' },
+    ],
+  },
+  {
+    icon: 'fa-layer-group',
+    title: 'Заголовки секций главной',
+    fields: [
+      { key: 'statsEyebrow', label: 'Надзаголовок «В цифрах»', area: 'input' },
+      { key: 'statsTitle', label: 'Заголовок «В цифрах»', area: 'input' },
+      { key: 'brandsEyebrow', label: 'Надзаголовок «Бренды»', area: 'input' },
+      { key: 'brandsTitle', label: 'Заголовок «Бренды»', area: 'input' },
+      { key: 'projectsTitle', label: 'Заголовок «Наши проекты»', area: 'input' },
+      { key: 'recommendEyebrow', label: 'Надзаголовок «Рекомендуем»', area: 'input' },
+      { key: 'recommendTitle', label: 'Заголовок «Рекомендуем»', area: 'input' },
+      { key: 'reviewsEyebrow', label: 'Надзаголовок «Отзывы»', area: 'input' },
+      { key: 'reviewsTitle', label: 'Заголовок «Отзывы»', area: 'input' },
     ],
   },
   {
@@ -48,6 +89,14 @@ const GROUPS: { icon: string; title: string; fields: FieldDef[] }[] = [
     ],
   },
   {
+    icon: 'fa-diagram-project',
+    title: 'Страница «Проекты»',
+    fields: [
+      { key: 'projectsEyebrow', label: 'Надзаголовок страницы проектов', area: 'input' },
+      { key: 'projectsSubtitle', label: 'Подзаголовок страницы проектов', area: 'input' },
+    ],
+  },
+  {
     icon: 'fa-truck',
     title: 'Страница «Доставка и оплата»',
     fields: [
@@ -64,6 +113,23 @@ const GROUPS: { icon: string; title: string; fields: FieldDef[] }[] = [
       { key: 'contactsSubtitle', label: 'Подзаголовок «Контакты»', area: 'input' },
       { key: 'contactsHeader', label: 'Заголовок блока контактов', area: 'input' },
       { key: 'feedbackSubjects', label: 'Темы для обратной связи', area: 'textarea' },
+    ],
+  },
+  {
+    icon: 'fa-bullhorn',
+    title: 'Финальный блок (CTA)',
+    fields: [
+      { key: 'ctaTitle', label: 'Заголовок финального блока', area: 'input' },
+      { key: 'ctaText', label: 'Текст финального блока', area: 'textarea' },
+      { key: 'ctaButton', label: 'Текст кнопки финального блока', area: 'input' },
+    ],
+  },
+  {
+    icon: 'fa-shoe-prints',
+    title: 'Футер',
+    fields: [
+      { key: 'footerAbout', label: 'Описание в футере', area: 'textarea' },
+      { key: 'footerBottom', label: 'Текст в нижней строке футера', area: 'input' },
     ],
   },
 ];
@@ -128,6 +194,29 @@ export function CompanyInfoPage() {
                       onChange={e => setInfo(p => ({ ...p, [field.key]: e.target.value }))}
                       rows={4}
                     />
+                  ) : field.area === 'radio' ? (
+                    <div className="form-field-options">
+                      {(field.options || []).map(opt => (
+                        <label key={opt.value} className="form-field-option">
+                          <input
+                            type="radio"
+                            name={`company-${field.key}`}
+                            checked={(info[field.key] || 'light') === opt.value}
+                            onChange={() => setInfo(p => ({ ...p, [field.key]: opt.value }))}
+                          />
+                          <span>{opt.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  ) : field.area === 'checkbox' ? (
+                    <label className="form-field-option form-field-option--check">
+                      <input
+                        type="checkbox"
+                        checked={info[field.key] === '1'}
+                        onChange={e => setInfo(p => ({ ...p, [field.key]: e.target.checked ? '1' : '0' }))}
+                      />
+                      <span>{field.label}</span>
+                    </label>
                   ) : (
                     <input
                       id={`company-${field.key}`}

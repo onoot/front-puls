@@ -7,7 +7,7 @@ export function ReviewFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
-  const [form, setForm] = useState({ name: '', photo: '', sort: 0, visible: true });
+  const [form, setForm] = useState({ name: '', company: '', message: '', photo: '', sort: 0, visible: true });
 
   useEffect(() => {
     if (id) {
@@ -15,6 +15,8 @@ export function ReviewFormPage() {
         const item = r.data.items.find((rv: any) => rv.id === Number(id));
         if (item) setForm({
           name: item.name || '',
+          company: item.company || '',
+          message: item.message || '',
           photo: item.photo || '',
           sort: item.sort || 0,
           visible: item.visible,
@@ -42,6 +44,12 @@ export function ReviewFormPage() {
       <form onSubmit={handleSubmit} className="entity-form">
         <label>Название
           <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required />
+        </label>
+        <label>Компания
+          <input value={form.company} onChange={e => setForm(p => ({ ...p, company: e.target.value }))} />
+        </label>
+        <label>Текст отзыва
+          <textarea value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} rows={4} />
         </label>
         <ImagePickerField label="Фото" value={form.photo} onChange={v => setForm(p => ({ ...p, photo: v }))} />
         <label>Сортировка

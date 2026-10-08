@@ -41,15 +41,20 @@ export function ProjectsPage() {
       {loading && <div className="page-loading"><Preloader /></div>}
       {!loading && <table className="data-table">
         <thead>
-          <tr><th>ID</th><th>Название</th><th>Фото</th><th>Видимость</th><th>Действия</th></tr>
+          <tr><th>ID</th><th>Название</th><th>Описание</th><th>Фото</th><th>Видимость</th><th>Действия</th></tr>
         </thead>
         <tbody>
           {projects.map(p => (
             <tr key={p.id}>
               <td>{p.id}</td>
               <td>{p.name}</td>
+              <td>{p.description && p.description.length > 60 ? `${p.description.slice(0, 60)}…` : p.description}</td>
               <td>{p.photo && <img src={`/uploads/${p.photo}`} alt="" width="50" />}</td>
-              <td><input type="checkbox" checked={p.visible} onChange={() => toggleVisible(p.id, p.visible)} /></td>
+              <td>
+                {p.visible
+                  ? <button onClick={() => toggleVisible(p.id, p.visible)} className="btn btn-sm btn-warning">Скрыть</button>
+                  : <button onClick={() => toggleVisible(p.id, p.visible)} className="btn btn-sm btn-success">Показать</button>}
+              </td>
               <td className="table-action">
                 <Link to={`/dashboard/projects/edit/${p.id}`} className="btn btn-sm btn-success">Редактировать</Link>
                 <button onClick={() => handleDelete(p.id)} className="btn btn-sm btn-danger">Удалить</button>

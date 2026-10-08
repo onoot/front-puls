@@ -41,16 +41,21 @@ export function ReviewsPage() {
       {loading && <div className="page-loading"><Preloader /></div>}
       {!loading && <table className="data-table">
         <thead>
-          <tr><th>ID</th><th>Название</th><th>Фото</th><th>Сортировка</th><th>Видимость</th><th>Действия</th></tr>
+          <tr><th>ID</th><th>Название</th><th>Текст</th><th>Фото</th><th>Сортировка</th><th>Видимость</th><th>Действия</th></tr>
         </thead>
         <tbody>
           {reviews.map(r => (
             <tr key={r.id}>
               <td>{r.id}</td>
-              <td>{r.name}</td>
+              <td>{r.name}{r.company ? <div className="table-sub">{r.company}</div> : null}</td>
+              <td>{r.message && r.message.length > 60 ? `${r.message.slice(0, 60)}…` : r.message}</td>
               <td>{r.photo && <img src={`/uploads/${r.photo}`} alt="" width="50" />}</td>
               <td>{r.sort}</td>
-              <td><input type="checkbox" checked={r.visible} onChange={() => toggleVisible(r.id, r.visible)} /></td>
+              <td>
+                {r.visible
+                  ? <button onClick={() => toggleVisible(r.id, r.visible)} className="btn btn-sm btn-warning">Скрыть</button>
+                  : <button onClick={() => toggleVisible(r.id, r.visible)} className="btn btn-sm btn-success">Показать</button>}
+              </td>
               <td className="table-action">
                 <Link to={`/dashboard/reviews/edit/${r.id}`} className="btn btn-sm btn-success">Ред.</Link>
                 <button onClick={() => handleDelete(r.id)} className="btn btn-sm btn-danger">Удалить</button>
