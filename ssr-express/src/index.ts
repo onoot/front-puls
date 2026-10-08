@@ -103,7 +103,7 @@ function buildPageHtml(opts: {
   <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${escapeHtml(canonicalPath)}">
-  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:Roboto,system-ui,sans-serif;color:#1c1f24;background:#fff;line-height:1.6}
