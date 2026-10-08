@@ -96,11 +96,10 @@ export function Header() {
   );
 
   // This build is light-only: it never flips to the dark header background.
-  const activeVariant: 'light' | 'dark' = 'light';
   const logoFile = pickLogo(company);
 
   return (
-    <header className={`themeholy-header header-layout2${activeVariant === 'dark' ? ' header-variant-dark' : ''}`}>
+    <header className="themeholy-header header-layout2">
       <div className="header-top">
         <div className="container">
           <div className="row justify-content-center justify-content-lg-between align-items-center gy-2">

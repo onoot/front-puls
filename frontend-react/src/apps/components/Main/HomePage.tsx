@@ -4,8 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Slide, Statistic, Brand, Letter, Project } from '../../types';
-import { sliderHttp } from '../../http/slider';
+import { Statistic, Brand, Letter, Project } from '../../types';
 import { companyHttp } from '../../http/company';
 import { brandsHttp } from '../../http/brands';
 import { lettersHttp } from '../../http/letters';
@@ -14,6 +13,17 @@ import { pickLogo } from '../Common/pickLogo';
 import { pagesHttp } from '../../http/pages';
 import { Preloader } from '../Common/Preloader';
 import { ProgressiveImage } from '../Common/ProgressiveImage';
+
+/**
+ * Hero banners, served straight from frontend-react/public — the slider is
+ * deliberately detached from the CMS/S3 for now. Reorder or add files here.
+ * The text is already baked into each banner, so nothing is overlaid on top.
+ */
+const HERO_BANNERS = [
+  { src: '/1-b.jpg', alt: 'Система пожарной сигнализации Пульсар' },
+  { src: '/banery-_1_.jpg', alt: 'Труба RE-XA Пульсар' },
+  { src: '/1509kh629_-_1_.jpg', alt: 'Насосы Пульсар' },
+];
 
 /**
  * Photos for the stats block. Drop the files into
@@ -38,7 +48,6 @@ function StatPhoto({ slug, alt }: { slug: string; alt: string }) {
 }
 
 export function HomePage() {
-  const [slides, setSlides] = useState<Slide[] | null>(null);
   const [stats, setStats] = useState<Statistic[] | null>(null);
   const [brands, setBrands] = useState<Brand[] | null>(null);
   const [letters, setLetters] = useState<Letter[] | null>(null);
@@ -47,7 +56,6 @@ export function HomePage() {
   const [aboutContent, setAboutContent] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    sliderHttp.getPublic().then(r => setSlides(r.data)).catch(() => setSlides([]));
     companyHttp.getStatistics().then(r => setStats(r.data)).catch(() => setStats([]));
     companyHttp.getInfo().then(r => setCompany(r.data)).catch(() => {});
     brandsHttp.getPublic().then(r => setBrands(r.data)).catch(() => setBrands([]));
@@ -58,46 +66,29 @@ export function HomePage() {
 
   return (
     <div className="home-page">
-      {slides === null && <Preloader fullPage />}
-      {slides && slides.length > 0 && (
-        <section className="hero-section">
-          <Swiper
-            modules={[Autoplay, Pagination]}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            pagination={{ clickable: true }}
-            loop={slides.length > 1}
-            className="hero-swiper"
-          >
-            {slides.map(slide => (
-              <SwiperSlide key={slide.id}>
-                <div className="hero-slide">
-                  {slide.photo ? (
-                    <ProgressiveImage
-                      className="hero-slide-img"
-                      src={`/uploads/${slide.photo}`}
-                      mobileSrc={slide.mobilePhoto ? `/uploads/${slide.mobilePhoto}` : undefined}
-                      alt={slide.name ?? ''}
-                      loading="eager"
-                    />
-                  ) : (
-                    <div className="hero-slide-img hero-slide-img--fallback" />
-                  )}
-                  <div className="hero-slide-overlay" />
-                  <div className="hero-slide-content container">
-                    {slide.name && <h1 className="hero-slide-title">{slide.name}</h1>}
-                    {slide.description && <p className="hero-slide-desc">{slide.description}</p>}
-                    {slide.link && (
-                      <Link to={slide.link} className="hero-slide-btn">
-                        Подробнее <i className="fa-solid fa-arrow-right" />
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </section>
-      )}
+      <section className="hero-section">
+        <Swiper
+          modules={[Autoplay, Pagination]}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          pagination={{ clickable: true }}
+          loop
+          className="hero-swiper"
+        >
+          {HERO_BANNERS.map(banner => (
+            <SwiperSlide key={banner.src}>
+              <div className="hero-slide">
+                <ProgressiveImage
+                  className="hero-slide-img"
+                  src={banner.src}
+                  alt={banner.alt}
+                  loading="eager"
+                  sizes="100vw"
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
 
       {stats === null && <div className="section-loading"><Preloader /></div>}
       {stats && stats.length > 0 && (
