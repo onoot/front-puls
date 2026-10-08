@@ -94,8 +94,14 @@ export function Header() {
     </ul>
   );
 
+  // This build is light-only: the header keeps the light background, so it
+  // always shows the light-background logo. In the CMS `logoDark` holds the
+  // light-background artwork and `logoLight` the dark-background one.
+  const activeVariant: 'light' | 'dark' = 'light';
+  const logoFile = company.logoDark || company.logo;
+
   return (
-    <header className="themeholy-header header-layout2">
+    <header className={`themeholy-header header-layout2${activeVariant === 'dark' ? ' header-variant-dark' : ''}`}>
       <div className="header-top">
         <div className="container">
           <div className="row justify-content-center justify-content-lg-between align-items-center gy-2">
@@ -125,8 +131,8 @@ export function Header() {
               <div className="col-auto">
                 <div className="header-logo">
                   <Link to="/">
-                    {company.logo ? (
-                      <ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="eager" sizes="180px" />
+                    {logoFile ? (
+                      <ProgressiveImage src={`/uploads/${logoFile}`} alt="Пульсар" loading="eager" sizes="180px" />
                     ) : (
                       <span style={{ fontFamily: 'var(--title-font)', fontSize: 24, fontWeight: 700 }}>Пульсар</span>
                     )}
@@ -242,8 +248,8 @@ export function Header() {
       <div className={`mobile-sidebar ${menuOpen ? 'open' : ''}`}>
         <div className="mobile-sidebar-header">
           <div className="mobile-sidebar-logo">
-            {company.logo ? (
-              <Link to="/" onClick={() => setMenuOpen(false)}><ProgressiveImage src={`/uploads/${company.logo}`} alt="Пульсар" loading="eager" sizes="180px" /></Link>
+            {logoFile ? (
+              <Link to="/" onClick={() => setMenuOpen(false)}><ProgressiveImage src={`/uploads/${logoFile}`} alt="Пульсар" loading="eager" sizes="180px" /></Link>
             ) : (
               <Link to="/" onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--title-font)', fontSize: 20, fontWeight: 700 }}>Пульсар</Link>
             )}
