@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { pagesHttp } from '../../http/pages';
-import { companyHttp } from '../../http/company';
 import { lettersHttp } from '../../http/letters';
 import { Letter } from '../../types';
 import { Preloader } from '../Common/Preloader';
@@ -8,14 +7,12 @@ import { ProgressiveImage } from '../Common/ProgressiveImage';
 
 export function AboutPage() {
   const [content, setContent] = useState<Record<string, string>>({});
-  const [company, setCompany] = useState<Record<string, string>>({});
   const [letters, setLetters] = useState<Letter[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       pagesHttp.getPage('about').then(r => setContent(r.data)),
-      companyHttp.getInfo().then(r => setCompany(r.data)),
       lettersHttp.getPublic().then(r => setLetters(r.data)),
     ]).finally(() => setLoading(false));
   }, []);
@@ -27,8 +24,8 @@ export function AboutPage() {
         <div className="row align-items-center">
           <div className="col-xl-6 mb-40">
             <div className="img-box2">
-              {company.logo && (
-                <div className="img1"><ProgressiveImage src={`/uploads/${company.logo}`} alt="О компании" sizes="600px" /></div>
+              {content.posterFilename && (
+                <div className="img1"><ProgressiveImage src={`/uploads/${content.posterFilename}`} alt="О компании" sizes="600px" /></div>
               )}
             </div>
           </div>
