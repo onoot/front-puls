@@ -14,6 +14,28 @@ import { pagesHttp } from '../../http/pages';
 import { Preloader } from '../Common/Preloader';
 import { ProgressiveImage } from '../Common/ProgressiveImage';
 
+/**
+ * Photos for the stats block. Drop the files into
+ * frontend-react/public/stats/ with these names; a missing file simply
+ * hides the image slot instead of breaking the block.
+ */
+const STAT_PHOTOS = ['catalog', 'projects', 'years'];
+
+function StatPhoto({ slug, alt }: { slug: string; alt: string }) {
+  const [hidden, setHidden] = useState(false);
+  if (hidden) return null;
+  return (
+    <div className="stat-card__media">
+      <img
+        src={`/stats/${slug}.jpg`}
+        alt={alt}
+        loading="lazy"
+        onError={() => setHidden(true)}
+      />
+    </div>
+  );
+}
+
 export function HomePage() {
   const [slides, setSlides] = useState<Slide[] | null>(null);
   const [stats, setStats] = useState<Statistic[] | null>(null);
@@ -78,13 +100,22 @@ export function HomePage() {
 
       {stats === null && <div className="section-loading"><Preloader /></div>}
       {stats && stats.length > 0 && (
-        <section className="space bg-smoke">
+        <section className="space bg-smoke stats-sec" id="home-stats">
           <div className="container">
+            <div className="title-area text-center">
+              <span className="sub-title">Цифры</span>
+              <h2 className="sec-title">Проверено объёмами</h2>
+            </div>
             <div className="row gy-30">
-              {stats.map(stat => (
-                <div key={stat.id} className="col-xl-3 col-md-6 text-center">
-                  <h3 style={{ fontSize: 42, fontWeight: 700, color: 'var(--theme-color)' }}>{stat.value}</h3>
-                  <p style={{ fontSize: 14, color: 'var(--gray-color)', margin: 0 }}>{stat.label}</p>
+              {stats.map((stat, i) => (
+                <div key={stat.id} className="col-xl-4 col-md-4">
+                  <div className="stat-card">
+                    <StatPhoto slug={stat.photo || STAT_PHOTOS[i] || `stat-${i + 1}`} alt={stat.label} />
+                    <div className="stat-card__body">
+                      <h3 className="stat-card__value">{stat.value}</h3>
+                      <p className="stat-card__label">{stat.label}</p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
