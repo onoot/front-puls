@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { companyHttp } from '../../http/company';
 import { catalogHttp } from '../../http/catalog';
 import { ProgressiveImage } from './ProgressiveImage';
+import { pickLogo } from './pickLogo';
 
 interface CategoryNode {
   id: number;
@@ -94,11 +95,9 @@ export function Header() {
     </ul>
   );
 
-  // This build is light-only: the header keeps the light background, so it
-  // always shows the light-background logo. In the CMS `logoDark` holds the
-  // light-background artwork and `logoLight` the dark-background one.
+  // This build is light-only: it never flips to the dark header background.
   const activeVariant: 'light' | 'dark' = 'light';
-  const logoFile = company.logoDark || company.logo;
+  const logoFile = pickLogo(company);
 
   return (
     <header className={`themeholy-header header-layout2${activeVariant === 'dark' ? ' header-variant-dark' : ''}`}>
