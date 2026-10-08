@@ -1543,6 +1543,21 @@
 
 .about-card { }
 
+.about-block-image {
+  margin-bottom: 30px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.about-block-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .about-card_text {
   font-size: 15px;
   line-height: 1.8;

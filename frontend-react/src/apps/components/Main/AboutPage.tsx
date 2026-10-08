@@ -49,6 +49,11 @@ export function AboutPage() {
         {content.leftBlockCaption && (
           <div className="row mt-n2 space-top">
             <div className="col-xl-6 mb-40">
+              {content.leftBlockImage && (
+                <div className="about-block-image">
+                  <ProgressiveImage src={`/uploads/${content.leftBlockImage}`} alt={content.leftBlockCaption || 'О компании'} sizes="600px" />
+                </div>
+              )}
               <h3 style={{ fontSize: 30, fontWeight: 600, marginBottom: 20 }}>{content.leftBlockCaption}</h3>
               <div className="checklist">
                 <ul>
