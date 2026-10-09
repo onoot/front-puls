@@ -26,6 +26,11 @@ server {
     index index.html;
     client_max_body_size 50m;
 
+    # Declared at server level on purpose: a set directive inside a location
+    # that starts with "rewrite ... break" never runs, and a literal upstream
+    # is resolved at startup - one bad BACKEND_HOST then kills nginx entirely.
+    set \$pulsar_backend http://${BACKEND_HOST}:${BACKEND_PORT};
+
     # Crawlers get the server-rendered copy at /render/. Everything that is
     # not a page route is left alone: API, uploads, built assets and files.
     if (\$pulsar_bot) {
@@ -49,8 +54,7 @@ server {
     }
 
     location ^~ /api/ {
-        set \$backend_upstream http://${BACKEND_HOST}:${BACKEND_PORT};
-        proxy_pass \$backend_upstream;
+        proxy_pass \$pulsar_backend;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_read_timeout 60s;
@@ -62,7 +66,7 @@ server {
 
     location ~* ^/uploads/[\w./-]+\.(jpe?g|jfif|png|gif|webp|ico|pdf|svg|avif)$ {
         rewrite ^/uploads/(.+)\$ /api/uploads/\$1 break;
-        proxy_pass http://${BACKEND_HOST}:${BACKEND_PORT};
+        proxy_pass \$pulsar_backend;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
 
@@ -75,6 +79,14 @@ server {
 
     location ~ ^/uploads/ {
         return 403;
+    }
+
+    # Favicon has a stable name and no content hash, so it must not inherit the
+    # 30-day immutable cache below - otherwise a replaced icon stays stale in
+    # every browser for a month.
+    location = /favicon.svg {
+        add_header Cache-Control "no-cache, must-revalidate" always;
+        expires -1;
     }
 
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)\$ {
